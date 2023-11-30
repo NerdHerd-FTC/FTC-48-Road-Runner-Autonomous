@@ -11,8 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.opmode.PoseStorage;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 
@@ -28,8 +26,8 @@ import org.firstinspires.ftc.teamcode.util.DashboardUtil;
  * want that to interfere with our graph so we just directly update localizer instead
  */
 @Config
-@TeleOp(name = "Smart TeleOp Align", group = "1 Smart TeleOp")
-public class TeleOpAlignWithPoint extends LinearOpMode {
+@TeleOp(name = "Smart TeleOp V1", group = "1 Smart TeleOp")
+public class _2023_11_29_01_Smart_TeleOp_V1 extends LinearOpMode {
 
     public static double DRAWING_TARGET_RADIUS = 2;
 
@@ -147,6 +145,12 @@ public class TeleOpAlignWithPoint extends LinearOpMode {
                     fieldOverlay.strokeLine(targetPosition.getX(), targetPosition.getY(), targetPosition.getX(), poseEstimate.getY());
                     fieldOverlay.strokeLine(targetPosition.getX(), poseEstimate.getY(), poseEstimate.getX(), poseEstimate.getY());
                     break;
+            }
+
+            if (poseEstimate.getX() >= 24 || (poseEstimate.getX() <= -24 && (poseEstimate.getY() >= 24 || poseEstimate.getY() <= -24))) {
+                SampleMecanumDrive.setMotorPowers(0.6, 0.6, 0.6, 0.6);
+            } else {
+                SampleMecanumDrive.setMotorPowers(1, 1, 1, 1);
             }
 
             // Draw bot on canvas
