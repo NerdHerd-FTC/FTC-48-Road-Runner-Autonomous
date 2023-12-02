@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.drive._2023_12_01;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Claw Test", group = "2023-12-01")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Servo Test", group = "2023-12-01")
 public class _2023_12_01_Servo_Test extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
