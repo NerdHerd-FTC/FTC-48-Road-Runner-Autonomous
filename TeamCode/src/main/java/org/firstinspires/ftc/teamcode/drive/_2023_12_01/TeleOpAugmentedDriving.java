@@ -68,15 +68,21 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
         // and https://github.com/NoahBres/road-runner-quickstart/blob/advanced-examples/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/advanced/TrajectorySequenceRunnerCancelable.java
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
 
-        /*DcMotor arm = hardwareMap.dcMotor.get("arm");
+        DcMotor arm = hardwareMap.dcMotor.get("arm");
         arm.setDirection(DcMotorSimple.Direction.FORWARD);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-         */
 
         Servo droneServo = hardwareMap.servo.get("drone");
         droneServo.setDirection(Servo.Direction.FORWARD);
         droneServo.scaleRange(0, 1);
+
+        Servo clawTop = hardwareMap.servo.get("clawTop");
+        Servo clawBottom = hardwareMap.servo.get("clawBottom");
+        clawTop.setDirection(Servo.Direction.FORWARD);
+        clawBottom.setDirection(Servo.Direction.REVERSE);
+        clawTop.scaleRange(0, 1);
+        clawBottom.scaleRange(0, 1);
 
         // We want to turn off velocity control for teleop
         // Velocity control per wheel is not necessary outside of motion profiled auto
@@ -99,6 +105,13 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
 
             // Read pose
             Pose2d poseEstimate = drive.getPoseEstimate();
+
+            telemetry.addData("Claw Top Position: ", clawTop.getPosition());
+            telemetry.addData("Claw Bottom Position: ", clawBottom.getPosition());
+
+            telemetry.addData("Arm position: ", arm.getCurrentPosition());
+            telemetry.addData("Arm Target Position Requested: ", liftTargetPosition);
+            telemetry.addData("Arm Actual Target Position: ", arm.getTargetPosition());
 
             // Print pose to telemetry
             telemetry.addData("mode", currentMode);
@@ -125,12 +138,15 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
                         drive.setMotorPowers(0.8, 0.8, 0.8, 0.8);
                     }
 
-                    /*if (gamepad1.right_trigger > 0) {
+                    if (gamepad1.right_trigger > 0) {
                         liftTargetPosition += 1;
                     } else if (gamepad1.left_trigger > 0) {
                         liftTargetPosition -= 1;
                     }
-                     */
+
+                    arm.setTargetPosition(liftTargetPosition);
+                    arm.setPower(0.7);
+                    arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                     if (gamepad1.y) {
                         clawTop.setPosition(0.5);
