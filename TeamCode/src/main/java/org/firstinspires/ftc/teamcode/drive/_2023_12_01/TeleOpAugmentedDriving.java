@@ -132,7 +132,21 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
                     }
                      */
 
+                    if (gamepad1.y) {
+                        clawTop.setPosition(0.5);
+                    }
+                    if (gamepad1.x) {
+                        clawTop.setPosition(0.3);
+                    }
+
+                    if (gamepad1.b) {
+                        clawBottom.setPosition(0.4);
+                    }
                     if (gamepad1.a) {
+                        clawBottom.setPosition(0.2);
+                    }
+
+                    if (gamepad1.right_bumper) {
                         // If the A button is pressed on gamepad1, we generate a splineTo()
                         // trajectory on the fly and follow it
                         // We switch the state to AUTOMATIC_CONTROL
@@ -144,7 +158,7 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
                         drive.followTrajectoryAsync(traj1);
 
                         currentMode = Mode.AUTOMATIC_CONTROL;
-                    } else if (gamepad1.b) {
+                    } else if (gamepad1.left_bumper) {
                         // If the B button is pressed on gamepad1, we generate a lineTo()
                         // trajectory on the fly and follow it
                         // We switch the state to AUTOMATIC_CONTROL
