@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.Vision;
+package org.firstinspires.ftc.teamcode.Vision.tensorFlow;
 
 import android.util.Size;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -19,9 +19,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "Blue Crown Team Prop TensorFlow Detection Test")
-
-public class TensorFlowBlueCrownPropDetection extends LinearOpMode {
+public class TensorFlowInstance {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -41,51 +39,54 @@ public class TensorFlowBlueCrownPropDetection extends LinearOpMode {
      */
     private TfodProcessor tfod;
 
+    private HardwareMap hardwareMap;
+
     /**
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
 
-    @Override
-    public void runOpMode() {
+    public String DetectProps() {
 
-        InitializeTensorFlowInstance();
+        int loop = 0;
+        int cycles = 20;
 
-        // Wait for the DS start button to be touched.
-        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-        telemetry.addData(">", "Touch Play to start OpMode");
-        telemetry.update();
-        waitForStart();
+        String PropLocation = "not scanned";
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
+        while (loop <= cycles) {
+            List<Recognition> currentRecognitions = tfod.getRecognitions();
 
-                TensorFlowDetectionTelemetry();
-
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
+            for (Recognition recognition : currentRecognitions) {
+                double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                
+                if (x < 640) {
+                    PropLocation = "left";
+                    break;
+                } else if (x >= 640 && x < 1280) {
+                    PropLocation = "center";
+                    break;
+                } else if (x >= 1280) {
+                    PropLocation = "right";
+                    break;
                 }
-
-                // Share the CPU.
-                sleep(20);
             }
         }
 
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+        return PropLocation;
+    }
 
-    }   // end runOpMode()
+    public void SetWebcamStreamStatus(String Action) {
+        if (Action == "start") {
+            visionPortal.resumeStreaming();
+        } else if (Action == "stop") {
+            visionPortal.stopStreaming();
+        }
+    }
 
-    /**
-     * Initialize the TensorFlow Object Detection processor.
-     */
-    private void InitializeTensorFlowInstance() {
+    public void IntitializeTensorFlow(HardwareMap robotHardware) {
+
+        hardwareMap = robotHardware;
 
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder()
@@ -122,7 +123,7 @@ public class TensorFlowBlueCrownPropDetection extends LinearOpMode {
         builder.setCameraResolution(new Size(1920, 1080));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        //builder.enableLiveView(true);
+        builder.enableLiveView(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
@@ -139,7 +140,7 @@ public class TensorFlowBlueCrownPropDetection extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.8f);
+        tfod.setMinResultConfidence(0.77f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
@@ -149,22 +150,5 @@ public class TensorFlowBlueCrownPropDetection extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void TensorFlowDetectionTelemetry() {
-
-        List<Recognition> currentRecognitions = tfod.getRecognitions();
-        telemetry.addData("# Objects Detected", currentRecognitions.size());
-
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-
-            telemetry.addData(""," ");
-            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-        }   // end for() loop
-
-    }   // end method TensorFlowDetectionTelemetry()
 
 }   // end class
