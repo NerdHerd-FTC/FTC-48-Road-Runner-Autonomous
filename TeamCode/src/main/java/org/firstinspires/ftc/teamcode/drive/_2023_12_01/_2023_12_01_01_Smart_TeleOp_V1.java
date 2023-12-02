@@ -40,7 +40,7 @@ import org.firstinspires.ftc.teamcode.drive.opmode.PoseStorage;
  * classes. Please ensure that these files are copied into your own project.
  */
 @TeleOp(name = "V1 Smart TeleOp", group = "2023-12-01")
-public class TeleOpAugmentedDriving extends LinearOpMode {
+public class _2023_12_01_01_Smart_TeleOp_V1 extends LinearOpMode {
     // Define 2 states, drive control or automatic control
     enum Mode {
         DRIVER_CONTROL,
