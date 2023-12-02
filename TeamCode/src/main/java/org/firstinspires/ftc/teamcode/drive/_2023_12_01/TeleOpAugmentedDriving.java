@@ -1,17 +1,15 @@
-package org.firstinspires.ftc.teamcode.drive.advanced;
-
-import static org.firstinspires.ftc.teamcode.drive.advanced.SampleMecanumDriveCancelable.*;
+package org.firstinspires.ftc.teamcode.drive._2023_12_01;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.drive.advanced.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.drive.opmode.PoseStorage;
 
 /**
@@ -41,7 +39,7 @@ import org.firstinspires.ftc.teamcode.drive.opmode.PoseStorage;
  * This sample utilizes the SampleMecanumDriveCancelable.java and TrajectorySequenceRunnerCancelable.java
  * classes. Please ensure that these files are copied into your own project.
  */
-@TeleOp(group = "advanced")
+@TeleOp(name = "V1 Smart TeleOp", group = "2023-12-01")
 public class TeleOpAugmentedDriving extends LinearOpMode {
     // Define 2 states, drive control or automatic control
     enum Mode {
@@ -58,6 +56,7 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
 
     // The location we want the bot to automatically go to when we press the B button
     Vector2d targetBVector = new Vector2d(-12, -36);
+    double targetBHeading = Math.toRadians(180);
 
     // The angle we want to align to when we press Y
     double targetAngle = Math.toRadians(180);
@@ -81,7 +80,7 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
+
         int liftTargetPosition = 0;
 
         // Retrieve our pose from the PoseStorage.currentPose static field
@@ -144,20 +143,20 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
                         // We switch the state to AUTOMATIC_CONTROL
 
                         Trajectory traj1 = drive.trajectoryBuilder(poseEstimate)
-                                .lineTo(targetBVector)
+                                .splineTo(targetBVector, targetBHeading)
                                 .build();
 
                         drive.followTrajectoryAsync(traj1);
 
                         currentMode = Mode.AUTOMATIC_CONTROL;
-                    } else if (gamepad1.y) {
+                    } /*else if (gamepad1.y) {
                         // If Y is pressed, we turn the bot to the specified angle to reach
                         // targetAngle (by default, 45 degrees)
 
                         drive.turnAsync(Angle.normDelta(targetAngle - poseEstimate.getHeading()));
 
                         currentMode = Mode.AUTOMATIC_CONTROL;
-                    }
+                    }*/
                     break;
                 case AUTOMATIC_CONTROL:
                     // If x is pressed, we break out of the automatic following
