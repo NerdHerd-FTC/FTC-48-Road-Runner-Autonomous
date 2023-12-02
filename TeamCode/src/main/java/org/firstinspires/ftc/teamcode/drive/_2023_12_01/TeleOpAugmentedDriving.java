@@ -55,7 +55,7 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
     double targetAHeading = Math.toRadians(180);
 
     // The location we want the bot to automatically go to when we press the B button
-    Vector2d targetBVector = new Vector2d(-12, -36);
+    Vector2d targetBVector = new Vector2d(12, -36);
     double targetBHeading = Math.toRadians(180);
 
     // The angle we want to align to when we press Y
