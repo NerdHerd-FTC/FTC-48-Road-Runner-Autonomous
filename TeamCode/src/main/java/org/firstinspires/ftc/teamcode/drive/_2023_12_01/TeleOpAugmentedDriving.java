@@ -73,16 +73,14 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
          */
-        
-        Servo droneServo = hardwareMap.servo.get("drone");
 
+        Servo droneServo = hardwareMap.servo.get("drone");
         droneServo.setDirection(Servo.Direction.FORWARD);
         droneServo.scaleRange(0, 1);
 
         // We want to turn off velocity control for teleop
         // Velocity control per wheel is not necessary outside of motion profiled auto
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         int liftTargetPosition = 0;
 
         // Retrieve our pose from the PoseStorage.currentPose static field
