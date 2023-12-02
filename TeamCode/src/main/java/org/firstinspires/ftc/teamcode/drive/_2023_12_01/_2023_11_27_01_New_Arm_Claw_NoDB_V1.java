@@ -23,9 +23,6 @@ public class _2023_11_27_01_New_Arm_Claw_NoDB_V1 extends LinearOpMode {
         clawTop.scaleRange(0, 1);
         clawBottom.scaleRange(0, 1);
 
-        clawBottom.setPosition(0);
-        clawTop.setPosition(0);
-
         int liftTargetPosition = 0;
         double openClaw = 0.4; //increase to open more
         double closeClaw = 0.2; //decrease to close more
@@ -84,19 +81,18 @@ public class _2023_11_27_01_New_Arm_Claw_NoDB_V1 extends LinearOpMode {
             }
              */
 
-
             if (gamepad1.y) {
-                clawTop.setPosition(closeClaw);
+                clawTop.setPosition(0.5);
             }
             if (gamepad1.x) {
-                clawTop.setPosition(openClaw);
+                clawTop.setPosition(0.3);
             }
 
             if (gamepad1.b) {
-                clawBottom.setPosition(closeClaw);
+                clawBottom.setPosition(0.4);
             }
             if (gamepad1.a) {
-                clawBottom.setPosition(openClaw);
+                clawBottom.setPosition(0.2);
             }
 
             arm.setTargetPosition(liftTargetPosition);
