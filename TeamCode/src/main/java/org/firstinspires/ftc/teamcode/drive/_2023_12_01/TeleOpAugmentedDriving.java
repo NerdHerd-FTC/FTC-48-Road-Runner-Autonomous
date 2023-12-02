@@ -68,18 +68,20 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
         // and https://github.com/NoahBres/road-runner-quickstart/blob/advanced-examples/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/advanced/TrajectorySequenceRunnerCancelable.java
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
 
-        DcMotor arm = hardwareMap.dcMotor.get("arm");
+        /*DcMotor arm = hardwareMap.dcMotor.get("arm");
+        arm.setDirection(DcMotorSimple.Direction.FORWARD);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+         */
+        
         Servo droneServo = hardwareMap.servo.get("drone");
 
-        arm.setDirection(DcMotorSimple.Direction.FORWARD);
         droneServo.setDirection(Servo.Direction.FORWARD);
         droneServo.scaleRange(0, 1);
 
         // We want to turn off velocity control for teleop
         // Velocity control per wheel is not necessary outside of motion profiled auto
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         int liftTargetPosition = 0;
 
@@ -124,6 +126,13 @@ public class TeleOpAugmentedDriving extends LinearOpMode {
                     } else {
                         drive.setMotorPowers(0.8, 0.8, 0.8, 0.8);
                     }
+
+                    /*if (gamepad1.right_trigger > 0) {
+                        liftTargetPosition += 1;
+                    } else if (gamepad1.left_trigger > 0) {
+                        liftTargetPosition -= 1;
+                    }
+                     */
 
                     if (gamepad1.a) {
                         // If the A button is pressed on gamepad1, we generate a splineTo()
