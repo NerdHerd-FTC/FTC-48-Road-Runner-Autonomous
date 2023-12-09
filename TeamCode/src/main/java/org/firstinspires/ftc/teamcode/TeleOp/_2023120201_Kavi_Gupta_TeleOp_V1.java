@@ -4,9 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ClawInstance;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.DroneLauncherInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
 @TeleOp
 public class _2023120201_Kavi_Gupta_TeleOp_V1 extends LinearOpMode {
@@ -19,10 +20,14 @@ public class _2023120201_Kavi_Gupta_TeleOp_V1 extends LinearOpMode {
         ArmInstance Arm = new ArmInstance();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
+        final TensorFlowInstance.CameraStreamProcessor processor = new TensorFlowInstance.CameraStreamProcessor();
+        TensorFlowInstance TensorFlow = new TensorFlowInstance();
+
 
         Arm.initializeArm(hardwareMap);
         Claw.initializeClaw(hardwareMap);
         DroneLauncher.initializeDroneLauncher(hardwareMap);
+        TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
 
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("motorFL");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("motorBL");
@@ -38,19 +43,17 @@ public class _2023120201_Kavi_Gupta_TeleOp_V1 extends LinearOpMode {
 
         while (opModeIsActive()) {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
-
-            x = x * 1.1;  // Counteract imperfect strafing
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio,
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = Math.round(((y + x + rx) / denominator));
-            double backLeftPower = Math.round(((y - x + rx) / denominator));
-            double frontRightPower = Math.round(((y - x - rx) / denominator));
-            double backRightPower = Math.round(((y + x - rx) / denominator));
+            double frontLeftPower = (y + x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
+            double frontRightPower = (y - x - rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
 
             if (gamepad1.dpad_up) {
                 Driving_Speed = 0.7;

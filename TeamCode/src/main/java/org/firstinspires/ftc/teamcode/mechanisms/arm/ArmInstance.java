@@ -5,17 +5,19 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ArmInstance {
+
+    private double Arm_Motor_Power = 0.3;
     private HardwareMap hardwareMap;
 
     public DcMotor Arm_Motor;
 
     public void initializeArm(HardwareMap hardwareMap) {
         Arm_Motor = hardwareMap.get(DcMotor.class, "Arm_Motor");
-        Arm_Motor.setDirection(DcMotor.Direction.REVERSE);
+        Arm_Motor.setDirection(DcMotor.Direction.FORWARD);
         Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Arm_Motor.setTargetPosition(5);
+        Arm_Motor.setTargetPosition(15);
         Arm_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
@@ -29,7 +31,16 @@ public class ArmInstance {
             Arm_Motor_Encoder_Target_Position = 900;
         }
         Arm_Motor.setTargetPosition(Arm_Motor_Encoder_Target_Position);
-        Arm_Motor.setPower(1);
+        Arm_Motor.setPower(Arm_Motor_Power);
         Arm_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void moveArmTo(int Desired_Arm_Position) {
+        Arm_Motor.setTargetPosition(Desired_Arm_Position);
+        Arm_Motor.setPower(Arm_Motor_Power);
+        Arm_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void setArmMotorPower(double power) {
+        Arm_Motor_Power = power;
     }
 }

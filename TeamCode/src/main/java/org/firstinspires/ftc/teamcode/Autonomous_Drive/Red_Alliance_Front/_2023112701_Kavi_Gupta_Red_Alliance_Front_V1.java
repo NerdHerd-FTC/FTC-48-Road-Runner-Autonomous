@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.Autonomous_Drive.Red_Alliance_Front;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-
+@Disabled
 public class _2023112701_Kavi_Gupta_Red_Alliance_Front_V1  extends LinearOpMode {
     @Override
     public void runOpMode() {
@@ -17,7 +18,7 @@ public class _2023112701_Kavi_Gupta_Red_Alliance_Front_V1  extends LinearOpMode 
 
         MecanumDrivebase.setPoseEstimate(StartingCoordinates);
 
-        TensorFlow.IntitializeTensorFlow(hardwareMap);
+        //TensorFlow.IntitializeTensorFlow(hardwareMap);
 
         String PropLocation;
         /*
