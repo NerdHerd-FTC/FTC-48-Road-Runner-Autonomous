@@ -10,21 +10,17 @@ import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
-public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
+public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5_No_Arm extends LinearOpMode {
     @Override
     public void runOpMode() {
 
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
         TensorFlowInstance TensorFlow = new TensorFlowInstance();
-        ClawInstance Claw = new ClawInstance();
-        ArmInstance Arm = new ArmInstance();
         final TensorFlowInstance.CameraStreamProcessor processor = new TensorFlowInstance.CameraStreamProcessor();
 
         Pose2d StartingCoordinates = new Pose2d(12, -60, Math.toRadians(270));
         MecanumDrivebase.setPoseEstimate(StartingCoordinates);
         TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
-        Claw.initializeClaw(hardwareMap);
-        Arm.initializeArm(hardwareMap);
 
         String PropLocation;
         TensorFlow.SetWebcamStreamStatus("start");
@@ -32,27 +28,16 @@ public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
 
         TrajectorySequence MoveToPropScanningLocation = MecanumDrivebase.trajectorySequenceBuilder(StartingCoordinates)
                 .back(12)
-                .addDisplacementMarker(() -> {
-                    Claw.Actuate_Claw_Top_Finger("close");
-                    Claw.Actuate_Claw_Bottom_Finger("close");
-                    Arm.moveArmTo(200);
-                })
+
                 .waitSeconds(1)
                 .build();
 
         TrajectorySequence PlacePixelOnCenterSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
                 .strafeLeft(5)
                 .back(20)
-                .addDisplacementMarker(() -> {
-                    //claw release
-                    Arm.moveArmTo(10);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                })
+
                 .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(150);
-                })
+
                 .build();
 
 
@@ -60,17 +45,8 @@ public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
         TrajectorySequence PlacePixelOnLeftSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
                 .back(20)
                 .turn(Math.toRadians(90))
-                .back(10)
-                .addDisplacementMarker(() -> {
-                    //claw release
-                    Arm.moveArmTo(10);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(150);
-                })
+                .back(2)
+
                 .build();
 
         TrajectorySequence PlacePixelOnRightSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
@@ -78,16 +54,7 @@ public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
                 .turn(Math.toRadians(-90))
                 .waitSeconds(1)
                 .back(10)
-                .addDisplacementMarker(() -> {
-                    //claw release
-                    Arm.moveArmTo(10);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(150);
-                })
+
                 .build();
 
 
@@ -96,45 +63,21 @@ public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
                 .strafeLeft(20)
                 .turn(Math.toRadians(90))
                 .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(400);
-                })
                 .forward(5)
                 .waitSeconds(2)
-                .addDisplacementMarker(() -> {
-                    Claw.Actuate_Claw_Top_Finger("open");
-                })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.setArmMotorPower(1);
-                    Arm.moveArmTo(100);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Arm.setArmMotorPower(0.3);
-                })
                 .back(5)
                 .strafeRight(20)
                 .forward(12)
                 .build();
 
         TrajectorySequence PlaceYellowPixelOnLeftBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnLeftSpike.end())
-                .back(41)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(450);
-                })
+                .forward(28)
                 .waitSeconds(3)
                 .forward(5)
-                .addDisplacementMarker(() -> {
-                    Claw.Actuate_Claw_Top_Finger("open");
-                })
                 .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.setArmMotorPower(1);
-                    Arm.moveArmTo(100);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Arm.setArmMotorPower(0.3);
-                })
                 .back(5)
-                .strafeRight(35)
+                .strafeRight(30)
+                .forward(15)
                 .build();
 
         TrajectorySequence PlaceYellowPixelOnRightBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnRightSpike.end())
@@ -143,21 +86,9 @@ public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
                 .waitSeconds(1)
                 .strafeRight(16)
                 .forward(27)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(450);
-                })
                 .waitSeconds(3)
                 .back(5)
-                .addDisplacementMarker(() -> {
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                })
                 .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.setArmMotorPower(1);
-                    Arm.moveArmTo(100);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Arm.setArmMotorPower(0.3);
-                })
                 .back(10)
                 .strafeRight(17)
                 .forward(20)
@@ -175,7 +106,7 @@ public class _2023120805_Kavi_Gupta_Red_Alliance_Front_V5 extends LinearOpMode {
 
         TensorFlow.SetWebcamStreamStatus("start");
 
-        PropLocation = "left";
+        PropLocation = "right";
 
         if (PropLocation == "left") {
             MecanumDrivebase.followTrajectorySequence(PlacePixelOnLeftSpike);
