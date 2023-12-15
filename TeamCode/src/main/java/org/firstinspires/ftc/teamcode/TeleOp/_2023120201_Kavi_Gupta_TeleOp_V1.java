@@ -85,7 +85,8 @@ public class _2023120201_Kavi_Gupta_TeleOp_V1 extends LinearOpMode {
             }
             if (gamepad2.right_trigger > 0) {
                 Arm.moveArmBy((int) (Arm_Adjustment_Value * gamepad2.right_trigger));
-            } else if (gamepad2.left_trigger > 0) {
+            }
+            if (gamepad2.left_trigger > 0) {
                 Arm.moveArmBy((int) (-Arm_Adjustment_Value * gamepad2.left_trigger));
             }
             if (gamepad2.dpad_up) {
