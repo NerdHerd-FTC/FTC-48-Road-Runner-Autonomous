@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous_Drive.Red_Alliance_Front;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
@@ -26,47 +28,45 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         Claw.initializeClaw(hardwareMap);
         Arm.initializeArm(hardwareMap);
 
-        String PropLocation= null;
+        String PropLocation = null;
         TensorFlow.SetWebcamStreamStatus("start");
 
         TrajectorySequence RotateToLeftProp = MecanumDrivebase.trajectorySequenceBuilder(StartingCoordinates)
-                .back(3)
+                .setTurnConstraint(5, 5)
+                .back(5)
                 .turn(Math.toRadians(45))
-                .waitSeconds(1)
                 .build();
 
         TrajectorySequence RotateToRightProp = MecanumDrivebase.trajectorySequenceBuilder(RotateToLeftProp.end())
+                .setTurnConstraint(5, 5)
                 .turn(Math.toRadians(-90))
-                .waitSeconds(1)
                 .build();
 
 
         TrajectorySequence MoveToPropScanningLocation = MecanumDrivebase.trajectorySequenceBuilder(RotateToRightProp.end())
+                .setTurnConstraint(5,5)
                 .turn(Math.toRadians(45))
                 .back(9)
-                .waitSeconds(1)
                 .build();
 
         TrajectorySequence PlacePixelOnCenterSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
-                .strafeLeft(5)
-                .back(20)
-                .addDisplacementMarker(() -> {
-                    //claw release
-                    Arm.moveArmTo(5);
-                    while (Arm.Arm_Motor.isBusy()) {}
+                .strafeLeft(4)
+                .back(16)
+                .addTemporalMarker(() -> {
+                    Arm.moveArmTo(10);
                 })
-                .waitSeconds(2)
-                .addDisplacementMarker(() -> {
+                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
                     Claw.Actuate_Claw_Bottom_Finger("open");
                 })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(150);
+                .addTemporalMarker( () -> {
+                    Arm.moveArmTo(525);
                 })
+                .waitSeconds(1)
                 .build();
 
 
-
+/*
         TrajectorySequence PlacePixelOnLeftSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
                 .back(20)
                 .turn(Math.toRadians(90))
@@ -101,29 +101,24 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 .build();
 
 
+ */
+
         TrajectorySequence PlaceYellowPixelOnCenterBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnCenterSpike.end())
-                .forward(5)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    //Arm.setArmMotorPower(0.1);
+                    Arm.moveArmTo(525);
+                })
+                .setVelConstraint(MecanumDrivebase.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
+                .forward(4)
                 .strafeLeft(20)
                 .turn(Math.toRadians(90))
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(400);
-                })
-                .forward(5)
+                .forward(15)
                 .waitSeconds(2)
-                .addDisplacementMarker(() -> {
+                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(100);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                })
-                .back(5)
-                .strafeRight(20)
-                .forward(12)
                 .build();
-
+/*
         TrajectorySequence PlaceYellowPixelOnLeftBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnLeftSpike.end())
                 .back(41)
                 .addDisplacementMarker(() -> {
@@ -175,6 +170,19 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 .strafeLeft(40)
                 .build();
 
+ */
+        TrajectorySequence ParkFromCenterBoardPlacement = MecanumDrivebase.trajectorySequenceBuilder(PlaceYellowPixelOnCenterBackDrop.end())
+            .back(5)
+            .addDisplacementMarker(() -> {
+                Arm.moveArmTo(100);
+                while (Arm.Arm_Motor.isBusy()) {}
+            })
+            .back(4)
+            .strafeRight(20)
+            .forward(12)
+            .resetVelConstraint()
+            .build();
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -185,6 +193,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         Arm.moveArmTo(300);
 
         MecanumDrivebase.followTrajectorySequence(RotateToLeftProp);
+        sleep(1000);
 
         if (TensorFlow.DetectProps() == "detected") {
             PropLocation = "left";
@@ -193,6 +202,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
 
 
         MecanumDrivebase.followTrajectorySequence(RotateToRightProp);
+        sleep(1000);
 
         if (TensorFlow.DetectProps() == "detected") {
             PropLocation = "right";
@@ -201,28 +211,31 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
 
 
         MecanumDrivebase.followTrajectorySequence(MoveToPropScanningLocation);
+        sleep(1000);
 
        if (TensorFlow.DetectProps() == "detected") {
             PropLocation = "center";
         }
 
-
+        PropLocation = "center";
 
         telemetry.addLine("Prop Location: " + PropLocation);
 
         TensorFlow.SetWebcamStreamStatus("start");
         if (PropLocation == "left") {
-            MecanumDrivebase.followTrajectorySequence(PlacePixelOnLeftSpike);
-            MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnLeftBackDrop);
+            //MecanumDrivebase.followTrajectorySequence(PlacePixelOnLeftSpike);
+            //MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnLeftBackDrop);
         } else if (PropLocation == "center") {
             MecanumDrivebase.followTrajectorySequence(PlacePixelOnCenterSpike);
             MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnCenterBackDrop);
+            Arm.moveArmTo(50);
+            sleep(1000);
 
         } else if (PropLocation == "right") {
-            MecanumDrivebase.followTrajectorySequence(PlacePixelOnRightSpike);
-            MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnRightBackDrop);
+            //MecanumDrivebase.followTrajectorySequence(PlacePixelOnRightSpike);
+            //MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnRightBackDrop);
         } else {
-            MecanumDrivebase.followTrajectorySequence(FailsafePark);
+            //MecanumDrivebase.followTrajectorySequence(FailsafePark);
         }
 
 
