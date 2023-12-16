@@ -22,8 +22,6 @@ public class ClawServoTesters extends LinearOpMode {
         Claw_Bottom_Finger.scaleRange(0, 1);
 
 
-
-
     }
 
     public void runOpMode() {

@@ -53,12 +53,13 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 .strafeLeft(4)
                 .back(16)
                 .addTemporalMarker(() -> {
-                    Arm.moveArmTo(10);
+                    Arm.moveArmTo(5);
                 })
                 .waitSeconds(0.5)
-                .addTemporalMarker( () -> {
+                .addTemporalMarker(() -> {
                     Claw.Actuate_Claw_Bottom_Finger("open");
                 })
+                .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
                     Arm.moveArmTo(525);
                 })
@@ -66,46 +67,46 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 .build();
 
 
-/*
         TrajectorySequence PlacePixelOnLeftSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
-                .back(20)
+                .back(18)
                 .turn(Math.toRadians(90))
-                .back(10)
-                .addDisplacementMarker(() -> {
-                    //claw release
-                    Arm.moveArmTo(10);
-                    while (Arm.Arm_Motor.isBusy()) {}
+                .back(4)
+                .addTemporalMarker(() -> {
+                    Arm.moveArmTo(5);
+                })
+                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
                     Claw.Actuate_Claw_Bottom_Finger("open");
                 })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(150);
+                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
+                    Arm.moveArmTo(525);
                 })
+                .waitSeconds(1)
                 .build();
 
         TrajectorySequence PlacePixelOnRightSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
-                .back(22)
+                .back(18)
                 .turn(Math.toRadians(-90))
-                .waitSeconds(1)
-                .back(10)
-                .addDisplacementMarker(() -> {
-                    //claw release
+                .back(4)
+                .addTemporalMarker(() -> {
                     Arm.moveArmTo(5);
-                    while (Arm.Arm_Motor.isBusy()) {}
+                })
+                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
                     Claw.Actuate_Claw_Bottom_Finger("open");
                 })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(150);
+                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
+                    Arm.moveArmTo(525);
                 })
+                .waitSeconds(1)
                 .build();
 
 
- */
 
         TrajectorySequence PlaceYellowPixelOnCenterBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnCenterSpike.end())
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    //Arm.setArmMotorPower(0.1);
                     Arm.moveArmTo(525);
                 })
                 .setVelConstraint(MecanumDrivebase.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
@@ -118,70 +119,68 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
                 .build();
-/*
+
         TrajectorySequence PlaceYellowPixelOnLeftBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnLeftSpike.end())
-                .back(41)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(450);
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    Arm.moveArmTo(525);
                 })
-                .waitSeconds(3)
-                .forward(5)
-                .addDisplacementMarker(() -> {
+                .setVelConstraint(MecanumDrivebase.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
+                .strafeLeft(3)
+                .forward(41)
+                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.setArmMotorPower(1);
-                    Arm.moveArmTo(100);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Arm.setArmMotorPower(0.3);
-                })
-                .back(5)
-                .strafeRight(35)
                 .build();
 
         TrajectorySequence PlaceYellowPixelOnRightBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnRightSpike.end())
-                .forward(10)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    Arm.moveArmTo(525);
+                })
+                .setVelConstraint(MecanumDrivebase.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
+                .forward(7)
                 .turn(Math.toRadians(180))
-                .waitSeconds(1)
-                .strafeRight(16)
-                .forward(27)
-                .addDisplacementMarker(() -> {
-                    Arm.moveArmTo(450);
+                .strafeRight(13)
+                .forward(42)
+                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                    Claw.Actuate_Claw_Top_Finger("open");
                 })
-                .waitSeconds(3)
-                .back(5)
-                .addDisplacementMarker(() -> {
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    Arm.setArmMotorPower(1);
-                    Arm.moveArmTo(100);
-                    while (Arm.Arm_Motor.isBusy()) {}
-                    Arm.setArmMotorPower(0.3);
-                })
-                .back(10)
-                .strafeRight(17)
-                .forward(20)
                 .build();
+
 
         TrajectorySequence FailsafePark = MecanumDrivebase.trajectorySequenceBuilder(StartingCoordinates)
                 .strafeLeft(40)
                 .build();
 
- */
         TrajectorySequence ParkFromCenterBoardPlacement = MecanumDrivebase.trajectorySequenceBuilder(PlaceYellowPixelOnCenterBackDrop.end())
             .back(5)
-            .addDisplacementMarker(() -> {
-                Arm.moveArmTo(100);
-                while (Arm.Arm_Motor.isBusy()) {}
+            .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
+                Arm.moveArmTo(10);
             })
             .back(4)
             .strafeRight(20)
             .forward(12)
             .resetVelConstraint()
             .build();
+
+        TrajectorySequence ParkFromLeftBoardPlacement = MecanumDrivebase.trajectorySequenceBuilder(PlaceYellowPixelOnLeftBackDrop.end())
+            .back(5)
+            .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
+                    Arm.moveArmTo(10);
+            })
+            .strafeRight(30)
+            .forward(12)
+            .resetVelConstraint()
+            .build();
+
+        TrajectorySequence ParkFromRightBoardPlacement = MecanumDrivebase.trajectorySequenceBuilder(PlaceYellowPixelOnRightBackDrop.end())
+            .back(5)
+            .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
+                Arm.moveArmTo(10);
+            })
+            .strafeRight(17)
+            .forward(12)
+            .build();
+
 
         waitForStart();
 
@@ -217,23 +216,30 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
             PropLocation = "center";
         }
 
-        PropLocation = "center";
+        PropLocation = "right";
 
         telemetry.addLine("Prop Location: " + PropLocation);
 
         TensorFlow.SetWebcamStreamStatus("start");
         if (PropLocation == "left") {
-            //MecanumDrivebase.followTrajectorySequence(PlacePixelOnLeftSpike);
-            //MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnLeftBackDrop);
+            MecanumDrivebase.followTrajectorySequence(PlacePixelOnLeftSpike);
+            MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnLeftBackDrop);
+            Arm.moveArmTo(50);
+            sleep(1000);
+            MecanumDrivebase.followTrajectorySequence(ParkFromLeftBoardPlacement);
         } else if (PropLocation == "center") {
             MecanumDrivebase.followTrajectorySequence(PlacePixelOnCenterSpike);
             MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnCenterBackDrop);
             Arm.moveArmTo(50);
             sleep(1000);
+            MecanumDrivebase.followTrajectorySequence(ParkFromCenterBoardPlacement);
 
         } else if (PropLocation == "right") {
-            //MecanumDrivebase.followTrajectorySequence(PlacePixelOnRightSpike);
-            //MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnRightBackDrop);
+            MecanumDrivebase.followTrajectorySequence(PlacePixelOnRightSpike);
+            MecanumDrivebase.followTrajectorySequence(PlaceYellowPixelOnRightBackDrop);
+            Arm.moveArmTo(50);
+            sleep(1000);
+            MecanumDrivebase.followTrajectorySequence(ParkFromRightBoardPlacement);
         } else {
             //MecanumDrivebase.followTrajectorySequence(FailsafePark);
         }
