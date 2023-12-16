@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.Vision.tensorFlow;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
@@ -39,14 +37,13 @@ public class TensorFlowInstance_Individual_Scanning {
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "20231203_FTC_Red_And_Blue_Crown_Props_Tensor_Flow_Model.tflite";
+    private static final String TFOD_MODEL_ASSET = "20231216_FTC_Crown_Props_V4_Tensor_Flow_Model.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/myCustomModel.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-            "Blue Crown",
-            "Red Crown"
+            "Crown"
     };
 
     /**
@@ -61,25 +58,30 @@ public class TensorFlowInstance_Individual_Scanning {
      */
     public VisionPortal visionPortal;
 
-    public String DetectProps() {
+    public double DetectProps() {
 
         int loop = 0;
         int cycles = 5;
 
-        String PropLocation = "not scanned";
+        double DetectionConfidence = 0;
 
         while (loop < cycles) {
             List<Recognition> currentRecognitions = tfod.getRecognitions();
 
-            if (currentRecognitions.isEmpty() == false) {
-                PropLocation = "detected";
-                break;
+            for (Recognition recognition : currentRecognitions) {
+                double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+
+                if (recognition.getConfidence() > 0.82) {
+                    DetectionConfidence = recognition.getConfidence();
+                    break;
+                }
             }
 
             loop++;
         }
 
-        return PropLocation;
+        return DetectionConfidence;
     }
 
     public void SetWebcamStreamStatus(String Action) {
@@ -144,14 +146,8 @@ public class TensorFlowInstance_Individual_Scanning {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        builder.setCameraResolution(new Size(1920, 1080));
-
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        builder.enableLiveView(true);
-
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
-
         // Choose whether or not LiveView stops if no processors are enabled.
         // If set "true", monitor shows solid orange screen if no processors enabled.
         // If set "false", monitor shows camera view without annotations.
@@ -168,7 +164,7 @@ public class TensorFlowInstance_Individual_Scanning {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.77f);
+        tfod.setMinResultConfidence(0.85f);
 
 
         // Disable or re-enable the TFOD processor at any time.

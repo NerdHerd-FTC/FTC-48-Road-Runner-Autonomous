@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode.Vision.tensorFlow;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -56,7 +55,7 @@ public class TensorFlowModelTester extends LinearOpMode {
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "20231215_FTC_Crown_Props_V4_Model.tflite";
+    private static final String TFOD_MODEL_ASSET = "old/20231215_FTC_Crown_Props_V4_Model.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/myCustomModel.tflite";

@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.Vision.tensorFlow;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
@@ -19,22 +22,6 @@ import org.opencv.core.Mat;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import java.util.concurrent.atomic.AtomicReference;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
-import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.VisionProcessor;
-import org.opencv.android.Utils;
-import org.opencv.core.Mat;
 
 /*
  * This OpMode illustrates the basics of TensorFlow Object Detection,
@@ -51,7 +38,7 @@ public class TensorFlowInstance {
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "20231203_FTC_Red_And_Blue_Crown_Props_Tensor_Flow_Model.tflite";
+    private static final String TFOD_MODEL_ASSET = "old/20231203_FTC_Red_And_Blue_Crown_Props_Tensor_Flow_Model.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/myCustomModel.tflite";
