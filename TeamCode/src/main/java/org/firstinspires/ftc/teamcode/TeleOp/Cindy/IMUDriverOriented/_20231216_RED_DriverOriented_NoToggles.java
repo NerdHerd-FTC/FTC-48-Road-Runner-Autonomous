@@ -1,17 +1,20 @@
-package org.firstinspires.ftc.teamcode.TeleOp.Cindy;
+package org.firstinspires.ftc.teamcode.TeleOp.Cindy.IMUDriverOriented;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
-@TeleOp(name = "0 RED Robot Oriented - No Toggles")
-public class _20231216_RED_RobotOriented_NoToggles extends LinearOpMode {
+@TeleOp(name = "RED Driver Oriented - No Toggles")
+@Disabled
+public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
@@ -55,11 +58,26 @@ public class _20231216_RED_RobotOriented_NoToggles extends LinearOpMode {
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = Math.round(((y + x + rx) / denominator));
-            double backLeftPower = Math.round(((y - x + rx) / denominator));
-            double frontRightPower = Math.round(((y - x - rx) / denominator));
-            double backRightPower = Math.round(((y + x - rx) / denominator));
+            if (gamepad1.back) {
+                imu.resetYaw();
+            }
+
+            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+            // Rotate the movement direction counter to the bot's rotation
+            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+            rotX = rotX * 1.1;  // Counteract imperfect strafing
+
+            // Denominator is the largest motor power (absolute value) or 1
+            // This ensures all the powers maintain the same ratio,
+            // but only if at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+            double frontLeftPower = ((rotY + rotX + rx) / denominator);
+            double backLeftPower = ((rotY - rotX + rx) / denominator);
+            double frontRightPower = ((rotY - rotX - rx) / denominator);
+            double backRightPower = ((rotY + rotX - rx) / denominator);
 
             /*if (gamepad1.dpad_up) {
                 Driving_Speed = 0.85;

@@ -1,20 +1,17 @@
-package org.firstinspires.ftc.teamcode.TeleOp.Cindy;
+package org.firstinspires.ftc.teamcode.TeleOp.Cindy.RobotOriented;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
-@TeleOp(name = "0 BLUE Driver Oriented - No Toggles")
-@Disabled
-public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
+@TeleOp(name = "0 RED Robot Oriented - No Toggles")
+public class _20231216_RED_RobotOriented_NoToggles extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
@@ -58,26 +55,11 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            if (gamepad1.back) {
-                imu.resetYaw();
-            }
-
-            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-            // Rotate the movement direction counter to the bot's rotation
-            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-
-            rotX = rotX * 1.1;  // Counteract imperfect strafing
-
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio,
-            // but only if at least one is out of the range [-1, 1]
-            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-            double frontLeftPower = ((rotY + rotX + rx) / denominator);
-            double backLeftPower = ((rotY - rotX + rx) / denominator);
-            double frontRightPower = ((rotY - rotX - rx) / denominator);
-            double backRightPower = ((rotY + rotX - rx) / denominator);
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontLeftPower = Math.round(((y + x + rx) / denominator));
+            double backLeftPower = Math.round(((y - x + rx) / denominator));
+            double frontRightPower = Math.round(((y - x - rx) / denominator));
+            double backRightPower = Math.round(((y + x - rx) / denominator));
 
             /*if (gamepad1.dpad_up) {
                 Driving_Speed = 0.85;
@@ -100,7 +82,7 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
                 Claw.Actuate_Claw_Bottom_Finger("toggle");
             }
 
-            if (gamepad1.left_bumper) {
+            if (gamepad1.right_bumper) {
                 DroneLauncher.launchDrone();
             }
 
@@ -121,13 +103,13 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
             }
              */
 
-            if (gamepad1.x) {
+            if (gamepad1.b) {
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 Arm.setArmPosTo(525, armSpeed);
             }
 
-            if (gamepad1.left_trigger > 0) {
+            if (gamepad1.right_trigger > 0) {
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 sleep(850);
 
@@ -148,20 +130,19 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
             }
 // genshin uid: 642041765
 // add me pls !!
-            if (gamepad1.b) {
-                armDown = false;
+            if (gamepad1.x) {
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
+                armDown = false;
                 Arm.setArmPosTo(100, 0.15);
             }
 
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad1.left_trigger > 0) {
                 Driving_Speed = 0.1;
                 armDown = true;
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 Claw.Actuate_Claw_Top_Finger("open");
                 sleep(700);
-                Arm.setArmPosTo(5, 0.15);
                 while (Arm.Arm_Motor.isBusy()) {}
                 backLeftMotor.setPower(-Driving_Speed);
                 backRightMotor.setPower(-Driving_Speed);
@@ -172,6 +153,8 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
 
                 Arm.setArmPosTo(5, 0.15);
 
+                sleep(500);
+
                 while (!Arm.Arm_Motor.isBusy()) {
                     backLeftMotor.setPower(0);
                     backRightMotor.setPower(0);
@@ -179,7 +162,6 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
                     frontRightMotor.setPower(0);
                     break;
                 }
-
                 Driving_Speed = 0.85;
             }
 
@@ -190,7 +172,7 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
                 frontLeftMotor.setPower(-Driving_Speed);
                 frontRightMotor.setPower(-Driving_Speed);
 
-                sleep(1000);
+                sleep(3000);
                 backLeftMotor.setPower(0);
                 backRightMotor.setPower(0);
                 frontLeftMotor.setPower(0);

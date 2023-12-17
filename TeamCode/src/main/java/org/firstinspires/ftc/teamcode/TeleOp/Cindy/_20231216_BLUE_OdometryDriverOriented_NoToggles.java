@@ -1,20 +1,19 @@
 package org.firstinspires.ftc.teamcode.TeleOp.Cindy;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
+import org.firstinspires.ftc.teamcode.drive.advanced.PoseStorage;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
-@TeleOp(name = "RED Driver Oriented - No Toggles")
-@Disabled
-public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
+@TeleOp(name = "0 BLUE Odometry Driver Oriented - No Toggles")
+public class _20231216_BLUE_OdometryDriverOriented_NoToggles extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
@@ -40,31 +39,27 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        IMU imu = hardwareMap.get(IMU.class, "imu");
-
-        // Adjust the orientation parameters to match your robot
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
-        // Without this, the REV Hub's orientation is assumed to be logo up / USB backward
-        imu.initialize(parameters);
+        MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
+        MecanumDrivebase.setPoseEstimate(PoseStorage.currentPose);
 
         boolean armDown = true;
 
         waitForStart();
 
         while (opModeIsActive()) {
+            MecanumDrivebase.update();
+
+            // Retrieve your pose
+            Pose2d myPose = MecanumDrivebase.getPoseEstimate();
+
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            if (gamepad1.back) {
-                imu.resetYaw();
-            }
+            double botHeading = myPose.getHeading();
+            double botX = myPose.getX();
+            double botY = myPose.getY();
 
-            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-            // Rotate the movement direction counter to the bot's rotation
             double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
             double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
@@ -100,7 +95,7 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
                 Claw.Actuate_Claw_Bottom_Finger("toggle");
             }
 
-            if (gamepad1.right_bumper) {
+            if (gamepad1.left_bumper) {
                 DroneLauncher.launchDrone();
             }
 
@@ -121,13 +116,13 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
             }
              */
 
-            if (gamepad1.b) {
+            if (gamepad1.x) {
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 Arm.setArmPosTo(525, armSpeed);
             }
 
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad1.left_trigger > 0) {
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 sleep(850);
 
@@ -148,19 +143,20 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
             }
 // genshin uid: 642041765
 // add me pls !!
-            if (gamepad1.x) {
+            if (gamepad1.b) {
+                armDown = false;
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
-                armDown = false;
                 Arm.setArmPosTo(100, 0.15);
             }
 
-            if (gamepad1.left_trigger > 0) {
+            if (gamepad1.right_trigger > 0) {
                 Driving_Speed = 0.1;
                 armDown = true;
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 Claw.Actuate_Claw_Top_Finger("open");
                 sleep(700);
+                Arm.setArmPosTo(5, 0.15);
                 while (Arm.Arm_Motor.isBusy()) {}
                 backLeftMotor.setPower(-Driving_Speed);
                 backRightMotor.setPower(-Driving_Speed);
@@ -171,8 +167,6 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
 
                 Arm.setArmPosTo(5, 0.15);
 
-                sleep(500);
-
                 while (!Arm.Arm_Motor.isBusy()) {
                     backLeftMotor.setPower(0);
                     backRightMotor.setPower(0);
@@ -180,6 +174,7 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
                     frontRightMotor.setPower(0);
                     break;
                 }
+
                 Driving_Speed = 0.85;
             }
 
@@ -190,7 +185,7 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
                 frontLeftMotor.setPower(-Driving_Speed);
                 frontRightMotor.setPower(-Driving_Speed);
 
-                sleep(3000);
+                sleep(1000);
                 backLeftMotor.setPower(0);
                 backRightMotor.setPower(0);
                 frontLeftMotor.setPower(0);
@@ -210,6 +205,10 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
 
             Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
 
+            telemetry.addData("x", myPose.getX());
+            telemetry.addData("y", myPose.getY());
+            telemetry.addData("heading", myPose.getHeading());
+            telemetry.addLine("");
             telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
             telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());
             telemetry.addData("Arm Target Position: ", Arm.Arm_Motor.getTargetPosition());
