@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
+@Disabled
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Drone Servo Test", group = "2023-12-01")
 public class ServoTester extends LinearOpMode {
     @Override
+
     public void runOpMode() throws InterruptedException {
         Servo clawTop = hardwareMap.servo.get("Drone_Launcher_Servo");
         clawTop.setDirection(Servo.Direction.FORWARD);

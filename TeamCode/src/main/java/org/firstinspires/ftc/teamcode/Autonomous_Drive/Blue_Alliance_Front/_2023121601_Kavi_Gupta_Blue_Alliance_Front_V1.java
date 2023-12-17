@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous_Drive.Red_Alliance_Front;
+package org.firstinspires.ftc.teamcode.Autonomous_Drive.Blue_Alliance_Front;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -16,18 +16,17 @@ import java.util.Collections;
 import java.util.List;
 
 @Autonomous
-public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
+public class _2023121601_Kavi_Gupta_Blue_Alliance_Front_V1 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        int ArmMovementValue = 555;
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
         TensorFlowInstance_Individual_Scanning TensorFlow = new TensorFlowInstance_Individual_Scanning();
         ClawInstance Claw = new ClawInstance();
         ArmInstance Arm = new ArmInstance();
         final TensorFlowInstance_Individual_Scanning.CameraStreamProcessor processor = new TensorFlowInstance_Individual_Scanning.CameraStreamProcessor();
 
-        Pose2d StartingCoordinates = new Pose2d(12, -60, Math.toRadians(270));
+        Pose2d StartingCoordinates = new Pose2d(12, 60, Math.toRadians(90));
         MecanumDrivebase.setPoseEstimate(StartingCoordinates);
         TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
         Claw.initializeClaw(hardwareMap);
@@ -60,7 +59,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 .build();
 
         TrajectorySequence PlacePixelOnCenterSpike = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
-                .strafeLeft(4)
+                .strafeRight(4)
                 .back(16)
                 .addTemporalMarker(() -> {
                     Arm.moveArmTo(5);
@@ -71,7 +70,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(525);
                 })
                 .waitSeconds(1)
                 .build();
@@ -90,7 +89,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(525);
                 })
                 .waitSeconds(1)
                 .build();
@@ -108,7 +107,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(525);
                 })
                 .waitSeconds(1)
                 .build();
@@ -117,12 +116,12 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
 
         TrajectorySequence PlaceYellowPixelOnCenterBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnCenterSpike.end())
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(525);
                 })
                 .setVelConstraint(MecanumDrivebase.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
                 .forward(4)
-                .strafeLeft(15)
-                .turn(Math.toRadians(90))
+                .strafeRight(20)
+                .turn(Math.toRadians(-90))
                 .forward(15)
                 .waitSeconds(2)
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
@@ -132,10 +131,10 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
 
         TrajectorySequence PlaceYellowPixelOnLeftBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnLeftSpike.end())
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(525);
                 })
                 .setVelConstraint(MecanumDrivebase.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
-                .strafeLeft(3)
+                .strafeRight(3)
                 .forward(42)
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
@@ -144,14 +143,14 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
 
         TrajectorySequence PlaceYellowPixelOnRightBackDrop = MecanumDrivebase.trajectorySequenceBuilder(PlacePixelOnRightSpike.end())
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(525);
                 })
                 .setVelConstraint(MecanumDrivebase.getVelocityConstraint(10, 10, DriveConstants.TRACK_WIDTH))
                 .forward(7)
                 .turn(Math.toRadians(180))
-                .strafeRight(18)
+                .strafeLeft(18)
                 .forward(42)
-                .strafeLeft(5)
+                .strafeRight(5)
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
@@ -160,7 +159,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
 
         TrajectorySequence FailsafePark = MecanumDrivebase.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
                 .forward(3)
-                .strafeLeft(40)
+                .strafeRight(40)
                 .build();
 
         TrajectorySequence ParkFromCenterBoardPlacement = MecanumDrivebase.trajectorySequenceBuilder(PlaceYellowPixelOnCenterBackDrop.end())
@@ -169,7 +168,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 Arm.moveArmTo(50);
             })
             .back(4)
-            .strafeRight(25)
+            .strafeRight(20)
             .forward(12)
             .resetVelConstraint()
             .build();

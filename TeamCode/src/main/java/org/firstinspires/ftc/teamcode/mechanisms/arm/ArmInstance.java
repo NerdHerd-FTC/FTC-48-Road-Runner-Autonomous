@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.mechanisms.arm;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ArmInstance {
 
     private double Arm_Motor_Power = 0.2;
     private HardwareMap hardwareMap;
+    public int currentArmPos;
+
 
     public DcMotor Arm_Motor;
 
@@ -45,5 +46,16 @@ public class ArmInstance {
     }
     public void setArmMotorPower(double power) {
         Arm_Motor_Power = power;
+    }
+    public void setArmPosTo(int Ticks_To_Move_Arm_To, double power) {
+        int Arm_Motor_Encoder_Target_Position = Ticks_To_Move_Arm_To;
+        Arm_Motor.setTargetPosition(Arm_Motor_Encoder_Target_Position);
+        Arm_Motor.setPower(power);
+        Arm_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        currentArmPos = Arm_Motor_Encoder_Target_Position;
+    }
+    public int getCurrentArmPos() {
+        return currentArmPos;
     }
 }

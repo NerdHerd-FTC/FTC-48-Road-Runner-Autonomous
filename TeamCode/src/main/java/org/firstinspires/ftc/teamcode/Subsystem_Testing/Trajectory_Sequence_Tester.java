@@ -1,16 +1,17 @@
 package org.firstinspires.ftc.teamcode.Subsystem_Testing;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
-import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
+@Disabled
+
 
 @Autonomous
 public class Trajectory_Sequence_Tester extends LinearOpMode {
