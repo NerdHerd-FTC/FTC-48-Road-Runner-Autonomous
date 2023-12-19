@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.Autonomous_Drive.Red_Alliance_Front;
+package org.firstinspires.ftc.teamcode.Autonomous_Drive.Blue_Alliance_Front;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Autonomous_Drive._2023121801_Kavi_Gupta_Autonomous_Constants_V1;
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Autonomous
-public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
+public class _2023121802_Kavi_Gupta_Blue_Alliance_Front_V2 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
@@ -27,7 +28,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         ArmInstance Arm = new ArmInstance();
         final TensorFlowInstance_Individual_Scanning.CameraStreamProcessor processor = new TensorFlowInstance_Individual_Scanning.CameraStreamProcessor();
 
-        Pose2d StartingCoordinates = new Pose2d(12, -60, Math.toRadians(270));
+        Pose2d StartingCoordinates = new Pose2d(12, 60, Math.toRadians(90));
         MecanumDrivebase.setPoseEstimate(StartingCoordinates);
         TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
         Claw.initializeClaw(hardwareMap);
@@ -37,6 +38,8 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         double centerDetectionConfidence = 0;
         double rightDetectionConfidence = 0;
 
+        _2023121801_Kavi_Gupta_Autonomous_Constants_V1 AutonomousConstants = new _2023121801_Kavi_Gupta_Autonomous_Constants_V1();
+
         List<Double> detectionConfidences = new ArrayList<Double>();
         String PropLocation = null;
         TensorFlow.SetWebcamStreamStatus("start");
@@ -44,23 +47,23 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         TrajectorySequence RotateToLeftProp = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingCoordinates)
                 .setTurnConstraint(5, 5)
                 .back(10)
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(-45))
                 .build();
 
         TrajectorySequence RotateToRightProp = MecanumDrivebaseInstance.trajectorySequenceBuilder(RotateToLeftProp.end())
                 .setTurnConstraint(5, 5)
-                .turn(Math.toRadians(-90))
+                .turn(Math.toRadians(90))
                 .build();
 
 
         TrajectorySequence MoveToPropScanningLocation = MecanumDrivebaseInstance.trajectorySequenceBuilder(RotateToRightProp.end())
                 .setTurnConstraint(5,5)
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(-45))
                 .back(4)
                 .build();
 
         TrajectorySequence PlacePixelOnCenterSpike = MecanumDrivebaseInstance.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
-                .strafeLeft(4)
+                .strafeRight(4)
                 .back(16)
                 .addTemporalMarker(() -> {
                     Arm.moveArmTo(5);
@@ -121,8 +124,8 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 })
                 .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(8, 8, DriveConstants.TRACK_WIDTH))
                 .forward(4)
-                .strafeLeft(15)
-                .turn(Math.toRadians(90))
+                .strafeRight(15)
+                .turn(Math.toRadians(-90))
                 .forward(15)
                 .waitSeconds(2)
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
@@ -164,34 +167,34 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
                 .build();
 
         TrajectorySequence ParkFromCenterBoardPlacement = MecanumDrivebaseInstance.trajectorySequenceBuilder(PlaceYellowPixelOnCenterBackDrop.end())
-            .back(5)
-            .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
-                Arm.moveArmTo(50);
-            })
-            .back(4)
-            .strafeRight(25)
-            .forward(12)
-            .resetVelConstraint()
-            .build();
+                .back(5)
+                .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
+                    Arm.moveArmTo(50);
+                })
+                .back(4)
+                .strafeRight(25)
+                .forward(12)
+                .resetVelConstraint()
+                .build();
 
         TrajectorySequence ParkFromLeftBoardPlacement = MecanumDrivebaseInstance.trajectorySequenceBuilder(PlaceYellowPixelOnLeftBackDrop.end())
-            .back(5)
-            .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
+                .back(5)
+                .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
                     Arm.moveArmTo(50);
-            })
-            .strafeRight(30)
-            .forward(12)
-            .resetVelConstraint()
-            .build();
+                })
+                .strafeRight(30)
+                .forward(12)
+                .resetVelConstraint()
+                .build();
 
         TrajectorySequence ParkFromRightBoardPlacement = MecanumDrivebaseInstance.trajectorySequenceBuilder(PlaceYellowPixelOnRightBackDrop.end())
-            .back(5)
-            .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
-                Arm.moveArmTo(50);
-            })
-            .strafeRight(17)
-            .forward(12)
-            .build();
+                .back(5)
+                .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
+                    Arm.moveArmTo(50);
+                })
+                .strafeRight(17)
+                .forward(12)
+                .build();
 
 
         waitForStart();

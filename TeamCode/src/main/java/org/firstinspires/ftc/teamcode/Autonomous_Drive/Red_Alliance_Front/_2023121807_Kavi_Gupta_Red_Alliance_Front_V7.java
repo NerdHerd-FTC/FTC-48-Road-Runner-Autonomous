@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Autonomous_Drive._2023121801_Kavi_Gupta_Autonomous_Constants_V1;
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Autonomous
-public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
+public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
@@ -36,6 +37,8 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         double leftDetectionConfidence = 0;
         double centerDetectionConfidence = 0;
         double rightDetectionConfidence = 0;
+
+        _2023121801_Kavi_Gupta_Autonomous_Constants_V1 AutonomousConstants = new _2023121801_Kavi_Gupta_Autonomous_Constants_V1();
 
         List<Double> detectionConfidences = new ArrayList<Double>();
         String PropLocation = null;
