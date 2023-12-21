@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -266,7 +267,7 @@ public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
         }
 
 
-
+        PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
 
         //Scan for props
 
