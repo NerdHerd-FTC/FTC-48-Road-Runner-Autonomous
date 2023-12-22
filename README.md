@@ -1,4 +1,5 @@
 # Road Runner Quickstart
+
 An example FTC project using [Road Runner](https://github.com/acmerobotics/road-runner).
 
 ## Installation
@@ -12,6 +13,3 @@ An example FTC project using [Road Runner](https://github.com/acmerobotics/road-
 ## Documentation
 
 Check out the [online quickstart documentation](https://rr.brott.dev/docs/v0-5/quickstart/introduction/).
-=======
-Check out the [docs](https://rr.brott.dev/docs/v1-0/tuning/).
-

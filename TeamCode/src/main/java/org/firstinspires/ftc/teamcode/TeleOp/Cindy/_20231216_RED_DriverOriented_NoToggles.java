@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
 @TeleOp(name = "RED Driver Oriented - No Toggles")
+@Disabled
 public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
