@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.PtzControl;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -32,6 +33,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TensorFlowInstance_Individual_Scanning {
 
     public WebcamName Webcam;
+
+    private PtzControl WebcamPTZControl;
+
+    private PtzControl.PanTiltHolder WebcamTargettingPanTiltControlHolder = new PtzControl.PanTiltHolder();
+
+    private PtzControl.PanTiltHolder WebcamRetrievingPanTiltHolder;
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -166,6 +173,11 @@ public class TensorFlowInstance_Individual_Scanning {
         // Set confidence threshold for TFOD recognitions, at any time.
         tfod.setMinResultConfidence(0.85f);
 
+        visionPortal.resumeStreaming();
+
+        WebcamPTZControl = visionPortal.getCameraControl(PtzControl.class);
+
+
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
@@ -175,5 +187,25 @@ public class TensorFlowInstance_Individual_Scanning {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
+    public void ActuateCameraTo(int zoom, int pan, int tilt) {
+        WebcamTargettingPanTiltControlHolder.pan = pan;
+        WebcamTargettingPanTiltControlHolder.tilt = tilt;
+        WebcamPTZControl.setPanTilt(WebcamTargettingPanTiltControlHolder);
+        WebcamPTZControl.setZoom(zoom);
+    }
+
+    public void ActuateCameraBy(int zoom, int pan, int tilt) {
+        WebcamRetrievingPanTiltHolder = WebcamPTZControl.getPanTilt();
+        int currentPan = WebcamRetrievingPanTiltHolder.pan;
+        int currentTilt = WebcamRetrievingPanTiltHolder.tilt;
+        int currentZoom = WebcamPTZControl.getZoom();
+
+        WebcamTargettingPanTiltControlHolder.pan = currentPan + pan;
+        WebcamTargettingPanTiltControlHolder.tilt = currentTilt + tilt;
+        WebcamPTZControl.setPanTilt(WebcamTargettingPanTiltControlHolder);
+        WebcamPTZControl.setZoom(currentZoom + zoom);
+
+
+    }
 
 }   // end class

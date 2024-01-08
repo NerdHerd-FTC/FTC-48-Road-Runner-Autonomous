@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.PtzControl;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -33,6 +34,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TensorFlowInstance {
 
     public WebcamName Webcam;
+
+    private PtzControl WebcamPTZControl;
+
+    private PtzControl.PanTiltHolder WebcamPanTiltControl = new PtzControl.PanTiltHolder();
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -187,5 +192,13 @@ public class TensorFlowInstance {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
+
+    public void ActuateCamera(int zoom, int pan, int tilt) {
+        WebcamPTZControl = visionPortal.getCameraControl(PtzControl.class);
+        WebcamPanTiltControl.pan = pan;
+        WebcamPanTiltControl.tilt = tilt;
+        WebcamPTZControl.setPanTilt(WebcamPanTiltControl);
+        WebcamPTZControl.setZoom(zoom);
+    }
 
 }   // end class
