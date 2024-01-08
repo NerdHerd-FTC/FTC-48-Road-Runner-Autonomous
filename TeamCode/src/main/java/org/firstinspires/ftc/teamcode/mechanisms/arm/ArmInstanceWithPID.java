@@ -10,18 +10,29 @@ public class ArmInstanceWithPID {
     private HardwareMap hardwareMap;
     public int currentArmPos;
 
+<<<<<<< Updated upstream
+=======
+
+    public DcMotor Arm_Motor;
+
+    ElapsedTime MoveArmToTimer = new ElapsedTime();
+
+>>>>>>> Stashed changes
     double armKp = 0.13;//0.029399999; 0.13
     double armKi = 0.00005999999;
     double armKd = 0.00001;
 
     double integralSum = 0;
     double lastError = 0;
+<<<<<<< Updated upstream
 
     ElapsedTime timer = new ElapsedTime();
 
 
     public DcMotor Arm_Motor;
 
+=======
+>>>>>>> Stashed changes
     public void initializeArm(HardwareMap hardwareMap) {
         Arm_Motor = hardwareMap.get(DcMotor.class, "Arm_Motor");
         Arm_Motor.setDirection(DcMotor.Direction.REVERSE);
@@ -38,15 +49,26 @@ public class ArmInstanceWithPID {
 
             double error = Desired_Arm_Position - Arm_Position;
 
+<<<<<<< Updated upstream
             double derivative = (error - lastError) /timer.seconds();
 
             integralSum = integralSum + (error * timer.seconds());
+=======
+            double derivative = (error - lastError) /MoveArmToTimer.seconds();
+
+            integralSum = integralSum + (error * MoveArmToTimer.seconds());
+>>>>>>> Stashed changes
 
             double out = (armKp * error) + (armKi * integralSum) + (armKd * derivative);
 
             Arm_Motor.setPower(out);
 
             lastError = error;
+<<<<<<< Updated upstream
+=======
+
+            MoveArmToTimer.reset();
+>>>>>>> Stashed changes
         }
 
     }
