@@ -1,7 +1,6 @@
-package org.firstinspires.ftc.teamcode.TeleOp.Cindy.SoloPixels;
+package org.firstinspires.ftc.teamcode.TeleOp.Cindy.SoloPixels_StackOf5;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,9 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "0 BLUE Solo Pixels")
-@Disabled
 
-public class _20240108_BLUE_SoloPixels extends LinearOpMode {
+public class _20240112_BLUE_SoloPixels_StackOf5 extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
@@ -55,6 +53,9 @@ public class _20240108_BLUE_SoloPixels extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        double currentX = 0;
+        double currentY = 0;
+
         boolean armDown = true;
 
         waitForStart();
@@ -67,6 +68,9 @@ public class _20240108_BLUE_SoloPixels extends LinearOpMode {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
+
+            currentX = RobotPose.getX();
+            currentY = RobotPose.getY();
 
             double RobotHeading = RobotPose.getHeading();
 
@@ -174,7 +178,7 @@ public class _20240108_BLUE_SoloPixels extends LinearOpMode {
             }
 
             if (gamepad1.right_trigger > 0) {
-                if (RobotPose.getX() < -24 && y > -36 && y < 36) {
+                if (currentX < -24 && currentY > -36 && currentY < 36) {
                     Claw.Actuate_Claw_Bottom_Finger("open");
                     Claw.Actuate_Claw_Top_Finger("open");
 
@@ -188,13 +192,7 @@ public class _20240108_BLUE_SoloPixels extends LinearOpMode {
                     Arm.RunWithoutEncoder();
                     Arm.setArmMotorPower(0);
                     armDown = true;
-
-                    while (!Arm.Arm_Motor.isBusy()) {
-                        backLeftMotor.setPower(0);
-                        backRightMotor.setPower(0);
-                        frontLeftMotor.setPower(0);
-                        frontRightMotor.setPower(0);
-                        break;
+                    sleep(500);
                     }
 
                 }else {
@@ -275,13 +273,14 @@ public class _20240108_BLUE_SoloPixels extends LinearOpMode {
                     Claw.Actuate_Claw_Bottom_Finger("close");
                     Claw.Actuate_Claw_Top_Finger("close");
                     sleep(150);
-                    if (RobotPose.getX() < -24 && y > -36 && y < 36) {
-                        Arm.RunWithEncoder();
-                        Arm.setArmPosTo(100, 0.15);
-                    }
+                    if (currentX < -24 && currentY > -36 && currentY < 36) {Arm.RunWithEncoder();}
+                    Arm.setArmPosTo(100, 0.15);
                 }
 
                 Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
+
+                telemetry.addData("Current X: ", currentX);
+                telemetry.addData("Current Y: ", currentY);
 
                 telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
                 telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());
@@ -289,6 +288,7 @@ public class _20240108_BLUE_SoloPixels extends LinearOpMode {
                 telemetry.addData("Top Claw Position: ", Claw.Claw_Top_Finger.getPosition());
                 telemetry.addData("Bottom Claw Position: ", Claw.Claw_Bottom_Finger.getPosition());
                 telemetry.addData("Drone Launcher Position: ", DroneLauncher.DroneLauncherServo.getPosition());
+
                 telemetry.addLine("");
                 telemetry.addLine("Genshin UID: 642041765");
                 telemetry.update();
