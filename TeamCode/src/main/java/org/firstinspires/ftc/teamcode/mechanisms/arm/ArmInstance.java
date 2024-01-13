@@ -57,6 +57,7 @@ public class ArmInstance {
     }
 
     public void RunWithoutEncoder(){Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);}
+    public void RunWithEncoder(){Arm_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);}
     public int getCurrentArmPos() {
         return currentArmPos;
     }
