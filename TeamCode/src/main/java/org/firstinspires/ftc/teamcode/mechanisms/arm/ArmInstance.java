@@ -18,8 +18,8 @@ public class ArmInstance {
         Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Arm_Motor.setTargetPosition(15);
-        Arm_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //Arm_Motor.setTargetPosition(15);
+        //Arm_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void moveArmBy(int Ticks_To_Move_Arm_Encoder_Position_By) {

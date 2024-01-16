@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp.Cindy;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
 @TeleOp(name = "0 BLUE Robot Oriented - No Toggles")
+@Disabled
 public class _20231216_BLUE_RobotOriented_NoToggles extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
