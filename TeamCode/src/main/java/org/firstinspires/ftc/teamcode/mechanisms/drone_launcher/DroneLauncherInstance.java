@@ -10,7 +10,7 @@ public class DroneLauncherInstance {
 
     public Servo DroneLauncherServo;
 
-    private double Drone_Launcher_Idle_Position = 0.5;
+    private double Drone_Launcher_Idle_Position = 0.3;
 
     private double Drone_Launcher_Launch_Position = 1;
 

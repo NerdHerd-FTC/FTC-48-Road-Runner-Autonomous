@@ -52,9 +52,15 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        boolean armDown = true;
+        boolean armDown = false;
+
 
         waitForStart();
+
+        Claw.Actuate_Claw_Top_Finger("close");
+        Claw.Actuate_Claw_Bottom_Finger("close");
+
+        Arm.moveArmTo(100);
 
         while (opModeIsActive()) {
             Localizer.update();
@@ -69,7 +75,7 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
 
 
             if (gamepad1.back) {
-                RobotHeading = 0;
+                Localizer.setPoseEstimate(new Pose2d(RobotPose.getX(), RobotPose.getY(), 0));
             }
 
 
@@ -223,7 +229,7 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
                 Arm.setArmPosTo(100, 0.15);
             }
 
-            Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
+            //Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
 
             telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
             telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());

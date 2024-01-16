@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -269,7 +270,7 @@ public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
         }
 
 
-
+        PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
 
         //Scan for props
 

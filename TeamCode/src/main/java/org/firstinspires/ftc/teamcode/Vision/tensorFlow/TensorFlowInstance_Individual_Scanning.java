@@ -175,7 +175,7 @@ public class TensorFlowInstance_Individual_Scanning {
 
         visionPortal.resumeStreaming();
 
-        WebcamPTZControl = visionPortal.getCameraControl(PtzControl.class);
+        //WebcamPTZControl = visionPortal.getCameraControl(PtzControl.class);
 
 
 
