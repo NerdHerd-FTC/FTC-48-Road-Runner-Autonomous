@@ -55,6 +55,8 @@ public class _20240115_Kavi_Gupta_Red_Tele_Op_Driver_Oriented_With_PIDF extends 
         long PixelPickupMoveForwardStartTime = 0;
         long Robot_Slo_Mo_Start_Time = 0;
 
+        TrajectorySequence Move_Robot_Forward_For_Slo_Mo = null;
+
         waitForStart();
 
         Claw.Actuate_Claw_Top_Finger("close");
@@ -154,21 +156,23 @@ public class _20240115_Kavi_Gupta_Red_Tele_Op_Driver_Oriented_With_PIDF extends 
             }
 
             if (gamepad1.dpad_up) {
-                TrajectorySequence Move_Robot_Forward_For_Slo_Mo = MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
-                        .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
-                        .forward(2)
-                        .build();
 
                 if (Is_Robot_In_Slo_Mo == false) {
+                    Move_Robot_Forward_For_Slo_Mo =  MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
+                            .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
+                            .forward(2)
+                            .build();
                     Robot_Slo_Mo_Start_Time = System.currentTimeMillis();
                     MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_Forward_For_Slo_Mo);
                     Is_Robot_In_Slo_Mo = true;
-                } else if (Is_Robot_In_Slo_Mo) {
-                    if (System.currentTimeMillis() >= Robot_Slo_Mo_Start_Time + Move_Robot_Forward_For_Slo_Mo.duration()) {
-                        Is_Robot_In_Slo_Mo = false;
-                    }
                 }
 
+            }
+
+            if (Is_Robot_In_Slo_Mo) {
+                if (System.currentTimeMillis() >= Robot_Slo_Mo_Start_Time + Move_Robot_Forward_For_Slo_Mo.duration()) {
+                    Is_Robot_In_Slo_Mo = false;
+                }
             }
 
             if (Is_Arm_Down) {
