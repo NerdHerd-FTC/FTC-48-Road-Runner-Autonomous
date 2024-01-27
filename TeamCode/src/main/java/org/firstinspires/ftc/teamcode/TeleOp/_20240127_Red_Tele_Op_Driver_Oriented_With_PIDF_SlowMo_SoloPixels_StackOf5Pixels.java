@@ -223,7 +223,7 @@ public class _20240127_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
                     Arm.Arm_Target_Angle = 5;
                     Is_Arm_Down = true;
                 }
-                
+
                 if (Is_Arm_Down) {
                     Is_Arm_Down = false;
                     Is_Power_Set_To_Zero = false;
