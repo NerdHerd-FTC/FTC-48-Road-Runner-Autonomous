@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
@@ -20,7 +20,7 @@ public class _2023121502_Kavi_Gupta_TeleOp_V2 extends LinearOpMode {
     private double Driving_Speed = 0.7;
     @Override
     public void runOpMode() throws InterruptedException {
-        ArmInstance Arm = new ArmInstance();
+        ArmInstancePrevious Arm = new ArmInstancePrevious();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
         final TensorFlowInstance.CameraStreamProcessor processor = new TensorFlowInstance.CameraStreamProcessor();

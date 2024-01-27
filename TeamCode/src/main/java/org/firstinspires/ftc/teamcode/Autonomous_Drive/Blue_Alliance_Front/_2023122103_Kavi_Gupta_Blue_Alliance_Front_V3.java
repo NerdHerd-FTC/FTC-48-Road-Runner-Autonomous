@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.PoseStorage;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -24,7 +24,7 @@ public class _2023122103_Kavi_Gupta_Blue_Alliance_Front_V3 extends LinearOpMode 
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
         TensorFlowInstance_Individual_Scanning TensorFlow = new TensorFlowInstance_Individual_Scanning();
         ClawInstance Claw = new ClawInstance();
-        ArmInstance Arm = new ArmInstance();
+        ArmInstancePrevious Arm = new ArmInstancePrevious();
         final TensorFlowInstance_Individual_Scanning.CameraStreamProcessor processor = new TensorFlowInstance_Individual_Scanning.CameraStreamProcessor();
 
         Pose2d StartingCoordinates = new Pose2d(12, 60, Math.toRadians(90));

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp.Cindy;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,21 +8,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "0 BLUE Driver Oriented - No Toggles")
+@TeleOp(name = "0 BLUE Solo Pixels")
 
-public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
+public class _20240112_BLUE_SoloPixels_StackOf5 extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
     private double Driving_Speed = 0.85;
     double armSpeed = 0.15;
+
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
@@ -34,7 +35,7 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
 
         PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
 
-        ArmInstancePrevious Arm = new ArmInstancePrevious();
+        ArmInstance Arm = new ArmInstance();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
 
@@ -52,28 +53,14 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        boolean armDown = false;
+        double currentX = 0;
+        double currentY = 0;
 
+        boolean armDown = true;
 
         waitForStart();
 
-        Claw.Actuate_Claw_Top_Finger("close");
-        Claw.Actuate_Claw_Bottom_Finger("close");
-
-        Arm.moveArmTo(100);
-
         while (opModeIsActive()) {
-            if (!Arm.Arm_Motor.isBusy() && armDown) {
-                telemetry.addLine("Moving arm to safety position");
-                telemetry.update();
-                armDown = false;
-                Claw.Actuate_Claw_Bottom_Finger("close");
-                Claw.Actuate_Claw_Top_Finger("close");
-                Arm.setArmPosTo(100, 0.15);
-                while (Arm.Arm_Motor.isBusy()) {
-                    if (isStopRequested()) {break;}
-                };
-            }
             Localizer.update();
 
             Pose2d RobotPose = Localizer.getPoseEstimate();
@@ -82,11 +69,14 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
+            currentX = RobotPose.getX();
+            currentY = RobotPose.getY();
+
             double RobotHeading = RobotPose.getHeading();
 
 
             if (gamepad1.back) {
-                Localizer.setPoseEstimate(new Pose2d(RobotPose.getX(), RobotPose.getY(), 0));
+                RobotHeading = 0;
             }
 
 
@@ -188,13 +178,62 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
             }
 
             if (gamepad1.right_trigger > 0) {
+                if (currentX < -24 && currentY > -36 && currentY < 36) {
+                    Claw.Actuate_Claw_Bottom_Finger("open");
+                    Claw.Actuate_Claw_Top_Finger("open");
+
+                    backLeftMotor.setPower(-Driving_Speed);
+                    backRightMotor.setPower(-Driving_Speed);
+                    frontLeftMotor.setPower(-Driving_Speed);
+                    frontRightMotor.setPower(-Driving_Speed);
+
+                    sleep(350);
+
+                    Arm.RunWithoutEncoder();
+                    Arm.setArmMotorPower(0);
+                    armDown = true;
+                    sleep(500);
+                    }
+
+                }else {
+                    Driving_Speed = 0.1;
+                    armDown = true;
+                    Claw.Actuate_Claw_Bottom_Finger("open");
+                    Claw.Actuate_Claw_Top_Finger("open");
+                    sleep(700);
+                    Arm.setArmPosTo(5, 0.15);
+                    while (Arm.Arm_Motor.isBusy()) {}
+                    backLeftMotor.setPower(-Driving_Speed);
+                    backRightMotor.setPower(-Driving_Speed);
+                    frontLeftMotor.setPower(-Driving_Speed);
+                    frontRightMotor.setPower(-Driving_Speed);
+
+                    sleep(350);
+
+                    Arm.setArmPosTo(5, 0.15);
+
+                    while (!Arm.Arm_Motor.isBusy()) {
+                        backLeftMotor.setPower(0);
+                        backRightMotor.setPower(0);
+                        frontLeftMotor.setPower(0);
+                        frontRightMotor.setPower(0);
+                        break;
+                    }
+
+                    Driving_Speed = 0.85;
+                }
+
+            }
+
+            if (gamepad1.right_bumper) {
                 Driving_Speed = 0.1;
                 armDown = true;
+                Arm.setArmPosTo(25, 0.15);
+                while (Arm.Arm_Motor.isBusy()) {}
+
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 Claw.Actuate_Claw_Top_Finger("open");
-                sleep(700);
-                Arm.setArmPosTo(5, 0.15);
-                while (Arm.Arm_Motor.isBusy()) {}
+
                 backLeftMotor.setPower(-Driving_Speed);
                 backRightMotor.setPower(-Driving_Speed);
                 frontLeftMotor.setPower(-Driving_Speed);
@@ -212,49 +251,47 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
                     break;
                 }
 
-                Driving_Speed = 0.85;
+                if (gamepad1.dpad_up) {
+                    Driving_Speed = 0.1;
+                    backLeftMotor.setPower(-Driving_Speed);
+                    backRightMotor.setPower(-Driving_Speed);
+                    frontLeftMotor.setPower(-Driving_Speed);
+                    frontRightMotor.setPower(-Driving_Speed);
+
+                    sleep(1000);
+                    backLeftMotor.setPower(0);
+                    backRightMotor.setPower(0);
+                    frontLeftMotor.setPower(0);
+                    frontRightMotor.setPower(0);
+
+                    Driving_Speed = 0.85;
+                }
+
+                if (!Arm.Arm_Motor.isBusy() && armDown) {
+                    armDown = false;
+                    sleep(50);
+                    Claw.Actuate_Claw_Bottom_Finger("close");
+                    Claw.Actuate_Claw_Top_Finger("close");
+                    sleep(150);
+                    if (currentX < -24 && currentY > -36 && currentY < 36) {Arm.RunWithEncoder();}
+                    Arm.setArmPosTo(100, 0.15);
+                }
+
+                Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
+
+                telemetry.addData("Current X: ", currentX);
+                telemetry.addData("Current Y: ", currentY);
+
+                telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
+                telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());
+                telemetry.addData("Arm Target Position: ", Arm.Arm_Motor.getTargetPosition());
+                telemetry.addData("Top Claw Position: ", Claw.Claw_Top_Finger.getPosition());
+                telemetry.addData("Bottom Claw Position: ", Claw.Claw_Bottom_Finger.getPosition());
+                telemetry.addData("Drone Launcher Position: ", DroneLauncher.DroneLauncherServo.getPosition());
+
+                telemetry.addLine("");
+                telemetry.addLine("Genshin UID: 642041765");
+                telemetry.update();
             }
-
-            if (gamepad1.dpad_up) {
-                Driving_Speed = 0.1;
-                backLeftMotor.setPower(-Driving_Speed);
-                backRightMotor.setPower(-Driving_Speed);
-                frontLeftMotor.setPower(-Driving_Speed);
-                frontRightMotor.setPower(-Driving_Speed);
-
-                sleep(1000);
-                backLeftMotor.setPower(0);
-                backRightMotor.setPower(0);
-                frontLeftMotor.setPower(0);
-                frontRightMotor.setPower(0);
-
-                Driving_Speed = 0.85;
-            }
-
-<<<<<<< Updated upstream
-            if (!Arm.Arm_Motor.isBusy() && armDown) {
-                armDown = false;
-                sleep(50);
-                Claw.Actuate_Claw_Bottom_Finger("close");
-                Claw.Actuate_Claw_Top_Finger("close");
-                sleep(150);
-                Arm.setArmPosTo(100, 0.15);
-            }
-
-            //Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
-=======
-            Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
->>>>>>> Stashed changes
-
-            telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
-            telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());
-            telemetry.addData("Arm Target Position: ", Arm.Arm_Motor.getTargetPosition());
-            telemetry.addData("Top Claw Position: ", Claw.Claw_Top_Finger.getPosition());
-            telemetry.addData("Bottom Claw Position: ", Claw.Claw_Bottom_Finger.getPosition());
-            telemetry.addData("Drone Launcher Position: ", DroneLauncher.DroneLauncherServo.getPosition());
-            telemetry.addLine("");
-            telemetry.addLine("Genshin UID: 642041765");
-            telemetry.update();
         }
     }
-}
