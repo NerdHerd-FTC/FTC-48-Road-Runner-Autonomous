@@ -15,7 +15,7 @@ public class ElevatorBothInstance {
 
     private double Elevator_Servos_Maximum_Movement_Cycles = 500;
 
-    private double Elevator_Elapsed_Movement_Cycles = 0;
+    public double Elevator_Elapsed_Movement_Cycles = 0;
 
     private double Elevator_Power = 1;
 

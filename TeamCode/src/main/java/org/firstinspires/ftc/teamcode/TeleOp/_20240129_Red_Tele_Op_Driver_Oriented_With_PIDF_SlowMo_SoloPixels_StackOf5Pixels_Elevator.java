@@ -9,9 +9,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF_PowerTo0;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF_And_Power_To_0;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.elevator.ElevatorBothInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.ArrayList;
@@ -28,16 +29,17 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
 
         StandardTrackingWheelLocalizer Localizer = new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
 
-        Arm_Instance_With_PIDF_PowerTo0 Arm = new Arm_Instance_With_PIDF_PowerTo0();
+        Arm_Instance_With_PIDF_And_Power_To_0 Arm = new Arm_Instance_With_PIDF_And_Power_To_0();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
+        ElevatorBothInstance Elevator = new ElevatorBothInstance();
 
         Localizer.setPoseEstimate(MecanumDrivebase.getPoseEstimate());
 
         Arm.Initialize_Arm_Instance(hardwareMap);
         Claw.initializeClaw(hardwareMap);
         DroneLauncher.initializeDroneLauncher(hardwareMap);
-
+        Elevator.initializeElevators(hardwareMap);
 
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("motorFL");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("motorBL");
@@ -56,6 +58,8 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
         boolean Is_Power_Set_To_Zero = false;
 
         boolean Lower_Arm_For_Solo_Pixels = false;
+
+        String ElevatorPresetTarget = "Down";
 
         long PixelPickupMoveForwardStartTime = 0;
         long Robot_Slo_Mo_Start_Time = 0;
@@ -215,6 +219,13 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
                     }
                 }
 
+                if (gamepad1.dpad_left) {
+                    ElevatorPresetTarget = "Up";
+                }
+                if (gamepad1.dpad_right) {
+                    ElevatorPresetTarget = "Down";
+                }
+
                 if (Lower_Arm_For_Solo_Pixels) {
                     Lower_Arm_For_Solo_Pixels = false;
                     Claw.Actuate_Claw_Bottom_Finger("open");
@@ -234,12 +245,14 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
                 }
 
                 if (!Is_Power_Set_To_Zero) {Arm.Update_Arm_Position_With_PIDF();}
+                Elevator.UpdateElevatorPositionToPreset(ElevatorPresetTarget);
 
                 telemetry.addData("Arm Position: ", Arm.Arm_Current_Position);
                 telemetry.addData("Arm Target Position: ", Arm.Arm_Target_Angle);
                 telemetry.addData("Top Claw Position: ", Claw.Claw_Top_Finger.getPosition());
                 telemetry.addData("Bottom Claw Position: ", Claw.Claw_Bottom_Finger.getPosition());
                 telemetry.addData("Drone Launcher Position: ", DroneLauncher.DroneLauncherServo.getPosition());
+                telemetry.addData("Elevator Servo Cycles: ", Elevator.Elevator_Elapsed_Movement_Cycles);
                 telemetry.addLine("--- Robot Pos ---");
                 telemetry.addData("x: ", currentX);
                 telemetry.addData("x: ", currentY);
