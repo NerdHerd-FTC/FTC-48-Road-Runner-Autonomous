@@ -117,7 +117,7 @@ public class _20240115_Kavi_Gupta_Red_Tele_Op_Driver_Oriented_With_PIDF extends 
                 Arm.Arm_Target_Angle = TeleOpConstants.Arm_Target_Position_Ticks_For_Backboard;
             }
 
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad1.right_trigger > 0.1) {
                 Claw.Actuate_Claw_Bottom_Finger("open");
 
                 Trajectory Move_Robot_To_Release_Next_Pixel = MecanumDrivebase.trajectoryBuilder(Current_Robot_Pose)
@@ -136,7 +136,7 @@ public class _20240115_Kavi_Gupta_Red_Tele_Op_Driver_Oriented_With_PIDF extends 
                 Arm.Arm_Target_Angle = TeleOpConstants.Arm_Target_Position_Ticks_For_Idle_Position;
             }
 
-            if (gamepad1.left_trigger > 0) {
+            if (gamepad1.left_trigger > 0.1) {
                 Is_Arm_Down = true;
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 Claw.Actuate_Claw_Top_Finger("open");

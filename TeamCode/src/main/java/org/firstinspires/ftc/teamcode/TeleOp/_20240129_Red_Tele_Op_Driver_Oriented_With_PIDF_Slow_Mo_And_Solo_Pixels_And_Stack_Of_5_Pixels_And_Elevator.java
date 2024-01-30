@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
-public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_StackOf5Pixels_Elevator extends LinearOpMode {
+public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_Slow_Mo_And_Solo_Pixels_And_Stack_Of_5_Pixels_And_Elevator extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
@@ -221,9 +221,11 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
 
                 if (gamepad1.dpad_left) {
                     ElevatorPresetTarget = "Up";
+                    Elevator.UpdateElevatorPositionToPreset("Up");
                 }
                 if (gamepad1.dpad_right) {
                     ElevatorPresetTarget = "Down";
+                    Elevator.UpdateElevatorPositionToPreset("Down");
                 }
 
                 if (Lower_Arm_For_Solo_Pixels) {
@@ -245,14 +247,15 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
                 }
 
                 if (!Is_Power_Set_To_Zero) {Arm.Update_Arm_Position_With_PIDF();}
-                Elevator.UpdateElevatorPositionToPreset(ElevatorPresetTarget);
 
                 telemetry.addData("Arm Position: ", Arm.Arm_Current_Position);
                 telemetry.addData("Arm Target Position: ", Arm.Arm_Target_Angle);
                 telemetry.addData("Top Claw Position: ", Claw.Claw_Top_Finger.getPosition());
                 telemetry.addData("Bottom Claw Position: ", Claw.Claw_Bottom_Finger.getPosition());
                 telemetry.addData("Drone Launcher Position: ", DroneLauncher.DroneLauncherServo.getPosition());
-                telemetry.addData("Elevator Servo Cycles: ", Elevator.Elevator_Elapsed_Movement_Cycles);
+                telemetry.addData("Elevator Servo Cycles: ", Elevator.Elevator_Servo_Elapsed_Movement_Cycles);
+                telemetry.addData("Left Elevator Motor Position: ", Elevator.LeftElevatorMotor.getCurrentPosition());
+                telemetry.addData("Right Elevator Motor Position: ", Elevator.RightElevatorMotor.getCurrentPosition());
                 telemetry.addLine("--- Robot Pos ---");
                 telemetry.addData("x: ", currentX);
                 telemetry.addData("x: ", currentY);

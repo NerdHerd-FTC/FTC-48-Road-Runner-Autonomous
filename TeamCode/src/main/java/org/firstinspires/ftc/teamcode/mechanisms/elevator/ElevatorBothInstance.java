@@ -14,8 +14,9 @@ public class ElevatorBothInstance {
     public CRServo RightElevatorServo;
 
     private double Elevator_Servos_Maximum_Movement_Cycles = 500;
+    private int Elevator_Motors_Maximum_Encoder_Ticks = 1000;
 
-    public double Elevator_Elapsed_Movement_Cycles = 0;
+    public double Elevator_Servo_Elapsed_Movement_Cycles = 0;
 
     private double Elevator_Power = 1;
 
@@ -27,12 +28,17 @@ public class ElevatorBothInstance {
         LeftElevatorServo.setDirection(DcMotorSimple.Direction.REVERSE);
         RightElevatorServo.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        LeftElevatorMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftElevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RightElevatorMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightElevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         LeftElevatorMotor.setPower(0);
         LeftElevatorServo.setPower(0);
         RightElevatorMotor.setPower(0);
         RightElevatorServo.setPower(0);
 
-        Elevator_Elapsed_Movement_Cycles = 0;
+        Elevator_Servo_Elapsed_Movement_Cycles = 0;
 
     }
     /*
@@ -61,31 +67,49 @@ public class ElevatorBothInstance {
         RightElevatorServo.setPower(0);
     }
     */
-    private void SetElevatorMotorsAndServosPower(double Power) {
-        LeftElevatorMotor.setPower(Power);
+    private void SetElevatorServosPower(double Power) {
         LeftElevatorServo.setPower(Power);
-        RightElevatorMotor.setPower(Power);
         RightElevatorServo.setPower(Power);
     }
+
     public void UpdateElevatorPositionToPreset(String Direction) {
         if (Direction == "Up") {
-            if (Elevator_Elapsed_Movement_Cycles < Elevator_Servos_Maximum_Movement_Cycles) {
-                Elevator_Elapsed_Movement_Cycles += 1;
-                SetElevatorMotorsAndServosPower(Elevator_Power);
+            if (Elevator_Servo_Elapsed_Movement_Cycles < Elevator_Servos_Maximum_Movement_Cycles) {
+                Elevator_Servo_Elapsed_Movement_Cycles += 1;
+                SetElevatorServosPower(Elevator_Power);
             } else {
-                SetElevatorMotorsAndServosPower(0);
+                SetElevatorServosPower(0);
             }
-        } else if (Direction == "Down") {
-            if (Elevator_Servos_Maximum_Movement_Cycles < Elevator_Servos_Maximum_Movement_Cycles) {
-                Elevator_Elapsed_Movement_Cycles -= 1;
-                SetElevatorMotorsAndServosPower(Elevator_Power);
+            if (LeftElevatorMotor.getCurrentPosition() < Elevator_Motors_Maximum_Encoder_Ticks) {
+                LeftElevatorMotor.setPower(1);
             } else {
-                SetElevatorMotorsAndServosPower(0);
+                LeftElevatorMotor.setPower(0);
             }
 
-        } //else if (Direction == "Stop") {
-        //    SetElevatorMotorsAndServosPower(0);
-        //}
+            if (RightElevatorMotor.getCurrentPosition() < Elevator_Motors_Maximum_Encoder_Ticks) {
+                RightElevatorMotor.setPower(1);
+            } else {
+                RightElevatorMotor.setPower(0);
+            }
+        } else if (Direction == "Down") {
+            if (Elevator_Servo_Elapsed_Movement_Cycles < Elevator_Servos_Maximum_Movement_Cycles) {
+                Elevator_Servo_Elapsed_Movement_Cycles -= 1;
+                SetElevatorServosPower(Elevator_Power);
+            } else {
+                SetElevatorServosPower(0);
+            }
+            if (LeftElevatorMotor.getCurrentPosition() > 0) {
+                LeftElevatorMotor.setPower(-1);
+            } else {
+                LeftElevatorMotor.setPower(0);
+            }
+
+            if (RightElevatorMotor.getCurrentPosition() > 0) {
+                RightElevatorMotor.setPower(-1);
+            } else {
+                RightElevatorMotor.setPower(0);
+            }
+        }
     }
 
 
