@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechanisms.elevator;
 
-import static java.lang.Thread.sleep;
-
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class ElevatorBothInstance {
     private HardwareMap hardwareMap;
@@ -15,6 +12,12 @@ public class ElevatorBothInstance {
     public DcMotor RightElevatorMotor;
     public CRServo LeftElevatorServo;
     public CRServo RightElevatorServo;
+
+    private double Elevator_Servos_Maximum_Movement_Cycles = 500;
+
+    private double Elevator_Elapsed_Movement_Cycles = 0;
+
+    private double Elevator_Power = 1;
 
     public void initializeElevators(HardwareMap hardwareMap) {
         DcMotor LeftElevatorMotor = hardwareMap.get(DcMotor.class, "Left_Elevator_Motor");
@@ -29,7 +32,10 @@ public class ElevatorBothInstance {
         RightElevatorMotor.setPower(0);
         RightElevatorServo.setPower(0);
 
+        Elevator_Elapsed_Movement_Cycles = 0;
+
     }
+    /*
 
     public void ElevatorMotorUp(double power, long timems) throws InterruptedException {
         LeftElevatorMotor.setPower(power);
@@ -53,6 +59,33 @@ public class ElevatorBothInstance {
         sleep(timems);
         LeftElevatorServo.setPower(0);
         RightElevatorServo.setPower(0);
+    }
+    */
+    private void SetElevatorMotorsAndServosPower(double Power) {
+        LeftElevatorMotor.setPower(Power);
+        LeftElevatorServo.setPower(Power);
+        RightElevatorMotor.setPower(Power);
+        RightElevatorServo.setPower(Power);
+    }
+    public void UpdateElevatorPositionToPreset(String Direction) {
+        if (Direction == "Up") {
+            if (Elevator_Elapsed_Movement_Cycles < Elevator_Servos_Maximum_Movement_Cycles) {
+                Elevator_Elapsed_Movement_Cycles += 1;
+                SetElevatorMotorsAndServosPower(Elevator_Power);
+            } else {
+                SetElevatorMotorsAndServosPower(0);
+            }
+        } else if (Direction == "Down") {
+            if (Elevator_Servos_Maximum_Movement_Cycles < Elevator_Servos_Maximum_Movement_Cycles) {
+                Elevator_Elapsed_Movement_Cycles -= 1;
+                SetElevatorMotorsAndServosPower(Elevator_Power);
+            } else {
+                SetElevatorMotorsAndServosPower(0);
+            }
+
+        } //else if (Direction == "Stop") {
+        //    SetElevatorMotorsAndServosPower(0);
+        //}
     }
 
 
