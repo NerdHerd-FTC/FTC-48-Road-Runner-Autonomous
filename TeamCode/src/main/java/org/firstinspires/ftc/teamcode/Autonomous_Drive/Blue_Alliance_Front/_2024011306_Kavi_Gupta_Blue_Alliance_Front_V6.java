@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.PoseStorage;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -26,7 +26,7 @@ public class _2024011306_Kavi_Gupta_Blue_Alliance_Front_V6 extends LinearOpMode 
         final MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
         //final TensorFlowInstance_Individual_Scanning TensorFlow = new TensorFlowInstance_Individual_Scanning();
         final ClawInstance Claw = new ClawInstance();
-        final ArmInstance Arm = new ArmInstance();
+        final ArmInstancePrevious Arm = new ArmInstancePrevious();
         //final TensorFlowInstance_Individual_Scanning.CameraStreamProcessor processor = new TensorFlowInstance_Individual_Scanning.CameraStreamProcessor();
 
         final Pose2d BlueFrontStartingCoordinates = new Pose2d(12, 60, Math.toRadians(90));

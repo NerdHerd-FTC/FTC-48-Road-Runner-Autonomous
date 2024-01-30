@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
@@ -33,7 +33,7 @@ public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
 
         PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
 
-        ArmInstance Arm = new ArmInstance();
+        ArmInstancePrevious Arm = new ArmInstancePrevious();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
 

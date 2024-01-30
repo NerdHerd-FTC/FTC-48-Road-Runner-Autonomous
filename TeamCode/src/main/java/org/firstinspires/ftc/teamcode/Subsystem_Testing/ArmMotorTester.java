@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 
 @Autonomous
 @Disabled
@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 public class ArmMotorTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-        ArmInstance Arm = new ArmInstance();
+        ArmInstancePrevious Arm = new ArmInstancePrevious();
 
         Arm.initializeArm(hardwareMap);
 

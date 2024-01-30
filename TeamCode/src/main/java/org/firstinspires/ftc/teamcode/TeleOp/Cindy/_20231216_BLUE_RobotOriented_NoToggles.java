@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 
@@ -21,7 +21,7 @@ public class _20231216_BLUE_RobotOriented_NoToggles extends LinearOpMode {
     double armSpeed = 0.15;
     @Override
     public void runOpMode() throws InterruptedException {
-        ArmInstance Arm = new ArmInstance();
+        ArmInstancePrevious Arm = new ArmInstancePrevious();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
 
