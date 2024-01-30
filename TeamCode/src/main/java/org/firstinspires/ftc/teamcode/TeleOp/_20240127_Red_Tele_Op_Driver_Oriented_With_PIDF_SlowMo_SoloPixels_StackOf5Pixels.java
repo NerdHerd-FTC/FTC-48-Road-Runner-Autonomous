@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import android.icu.text.CaseMap;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF_PowerTo0;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF_And_Power_To_0;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -30,7 +28,7 @@ public class _20240127_Red_Tele_Op_Driver_Oriented_With_PIDF_SlowMo_SoloPixels_S
 
         StandardTrackingWheelLocalizer Localizer = new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
 
-        Arm_Instance_With_PIDF_PowerTo0 Arm = new Arm_Instance_With_PIDF_PowerTo0();
+        Arm_Instance_With_PIDF_And_Power_To_0 Arm = new Arm_Instance_With_PIDF_And_Power_To_0();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
 

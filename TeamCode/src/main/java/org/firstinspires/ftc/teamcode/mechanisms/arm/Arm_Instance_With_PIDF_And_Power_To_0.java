@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.mechanisms.arm;
 
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Arm_Instance_With_PIDF_PowerTo0 {
+public class Arm_Instance_With_PIDF_And_Power_To_0 {
     private PIDController Arm_PID_Controller;
 
     public static double P_Coefficient = 0.02;
