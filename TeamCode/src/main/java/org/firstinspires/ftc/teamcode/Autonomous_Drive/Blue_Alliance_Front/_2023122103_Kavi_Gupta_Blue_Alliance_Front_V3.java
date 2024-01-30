@@ -70,10 +70,10 @@ public class _2023122103_Kavi_Gupta_Blue_Alliance_Front_V3 extends LinearOpMode 
         }
 
         PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
-<<<<<<< Updated upstream
+/*<<<<<<< Updated upstream
 
 =======
->>>>>>> Stashed changes
+>>>>>>> Stashed changes*/
     }
 
 }

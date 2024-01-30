@@ -13,6 +13,9 @@ public class BothElevatorTest extends LinearOpMode {
 
         double directionMultiplier = 1;
 
+        double ElevatorMotorCount = 0;
+
+
         DcMotor LeftElevatorMotor = hardwareMap.get(DcMotor.class, "Left_Elevator_Motor");
         CRServo LeftElevatorServo = hardwareMap.get(CRServo.class, "Left_Elevator_Servo");
         DcMotor RightElevatorMotor = hardwareMap.get(DcMotor.class, "Right_Elevator_Motor");
@@ -37,8 +40,10 @@ public class BothElevatorTest extends LinearOpMode {
                 telemetry.addData("Direction Multiplier: ", directionMultiplier);
             }
             if (gamepad1.right_trigger > 0.1) {
-                LeftElevatorMotor.setPower(gamepad1.right_trigger*directionMultiplier);
-                RightElevatorMotor.setPower(gamepad1.right_trigger*directionMultiplier);
+                double triggerValue = gamepad1.right_trigger;
+                LeftElevatorMotor.setPower(triggerValue*directionMultiplier);
+                RightElevatorMotor.setPower(triggerValue*directionMultiplier);
+                ElevatorMotorCount += triggerValue*directionMultiplier;
                 telemetry.addLine("Motor Spinning");
             }
             if (gamepad1.left_trigger > 0.1) {

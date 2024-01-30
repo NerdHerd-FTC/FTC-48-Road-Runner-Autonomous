@@ -12,10 +12,10 @@ import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.drive.PoseStorage;
-<<<<<<< Updated upstream
+/*<<<<<<< Updated upstream
 =======
 
->>>>>>> Stashed changes
+>>>>>>> Stashed changes*/
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -273,13 +273,11 @@ public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
             MecanumDrivebase.followTrajectorySequence(FailsafePark);
         }
 
-<<<<<<< Updated upstream
 
         PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
-=======
+
         PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
 
->>>>>>> Stashed changes
 
         //Scan for props
 

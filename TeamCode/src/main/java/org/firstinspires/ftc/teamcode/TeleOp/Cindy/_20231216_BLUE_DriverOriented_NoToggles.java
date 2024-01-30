@@ -231,7 +231,6 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
                 Driving_Speed = 0.85;
             }
 
-<<<<<<< Updated upstream
             if (!Arm.Arm_Motor.isBusy() && armDown) {
                 armDown = false;
                 sleep(50);
@@ -242,9 +241,7 @@ public class _20231216_BLUE_DriverOriented_NoToggles extends LinearOpMode {
             }
 
             //Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
-=======
             Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
->>>>>>> Stashed changes
 
             telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
             telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());
