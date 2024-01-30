@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous_Drive.Red_Alliance_Front;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance;
+import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_With_PTZ;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
@@ -18,14 +19,14 @@ public class _2023120303_Kavi_Gupta_Red_Alliance_Front_V3 extends LinearOpMode {
     public void runOpMode() {
 
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
-        TensorFlowInstance TensorFlow = new TensorFlowInstance();
+        TensorFlowInstance_With_PTZ TensorFlow = new TensorFlowInstance_With_PTZ();
         ClawInstance Claw = new ClawInstance();
         ArmInstance Arm = new ArmInstance();
-        final TensorFlowInstance.CameraStreamProcessor processor = new TensorFlowInstance.CameraStreamProcessor();
+        final TensorFlowInstance_With_PTZ.CameraStreamProcessor processor = new TensorFlowInstance_With_PTZ.CameraStreamProcessor();
 
         Pose2d StartingCoordinates = new Pose2d(12, -60, Math.toRadians(270));
         MecanumDrivebase.setPoseEstimate(StartingCoordinates);
-        TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
+        TensorFlow.InitializeTensorFlow(hardwareMap, processor);
         Claw.initializeClaw(hardwareMap);
         Arm.initializeArm(hardwareMap);
 

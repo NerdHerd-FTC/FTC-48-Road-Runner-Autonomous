@@ -8,9 +8,9 @@ public class WebcamPTZControlsTesting extends LinearOpMode {
     //declarations
     public void runOpMode() {
         //Init Code
+        TensorFlowInstance TensorFlow = new TensorFlowInstance();
 
-
-
+        TensorFlow.InitializeTensorFlow(hardwareMap);
 
         waitForStart();
 

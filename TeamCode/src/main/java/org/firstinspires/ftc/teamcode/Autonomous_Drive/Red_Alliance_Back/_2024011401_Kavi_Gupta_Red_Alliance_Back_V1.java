@@ -30,7 +30,7 @@ public class _2024011401_Kavi_Gupta_Red_Alliance_Back_V1 extends LinearOpMode {
 
         Pose2d StartingPositionRedBack = new Pose2d(-36, -60, Math.toRadians(-90));
         MecanumDrivebase.setPoseEstimate(StartingPositionRedBack);
-        //TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
+        //TensorFlow.InititializeTensorFlow(hardwareMap, processor);
         Claw.initializeClaw(hardwareMap);
         Arm.initializeArm(hardwareMap);
 
