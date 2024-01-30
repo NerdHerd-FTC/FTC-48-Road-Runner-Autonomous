@@ -18,7 +18,7 @@ public class _2023112701_Kavi_Gupta_Red_Alliance_Front_V1  extends LinearOpMode 
 
         MecanumDrivebase.setPoseEstimate(StartingCoordinates);
 
-        //TensorFlow.IntitializeTensorFlow(hardwareMap);
+        //TensorFlow.InititializeTensorFlow(hardwareMap);
 
         String PropLocation;
         /*

@@ -1,16 +1,28 @@
 package org.firstinspires.ftc.teamcode.Vision.tensorFlow;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Size;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.PtzControl;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /*
  * This OpMode illustrates the basics of TensorFlow Object Detection,
@@ -19,9 +31,14 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-public class TensorFlowInstance {
+public class TensorFlowInstance_With_PTZ {
 
     public WebcamName Webcam;
+
+    private PtzControl WebcamPTZControl;
+
+    private PtzControl.PanTiltHolder WebcamPanTiltControl = new PtzControl.PanTiltHolder();
+
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
@@ -32,7 +49,8 @@ public class TensorFlowInstance {
     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/myCustomModel.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-            "Crown",
+            "Blue Crown",
+            "Red Crown"
     };
 
     /**
@@ -85,7 +103,37 @@ public class TensorFlowInstance {
         }
     }
 
-    public void InitializeTensorFlow(HardwareMap robotHardware) {
+    public static class CameraStreamProcessor implements VisionProcessor, CameraStreamSource {
+        private final AtomicReference<Bitmap> lastFrame =
+                new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
+
+        @Override
+        public void init(int width, int height, CameraCalibration calibration) {
+            lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+        }
+
+        @Override
+        public Object processFrame(Mat frame, long captureTimeNanos) {
+            Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
+            Utils.matToBitmap(frame, b);
+            lastFrame.set(b);
+            return null;
+        }
+
+        @Override
+        public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight,
+                                float scaleBmpPxToCanvasPx, float scaleCanvasDensity,
+                                Object userContext) {
+            // do nothing
+        }
+
+        @Override
+        public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
+            continuation.dispatch(bitmapConsumer -> bitmapConsumer.accept(lastFrame.get()));
+        }
+    }
+
+    public void InitializeTensorFlow(HardwareMap robotHardware, CameraStreamProcessor processor) {
 
         hardwareMap = robotHardware;
 
@@ -125,6 +173,10 @@ public class TensorFlowInstance {
         // Set and enable the processor.
         builder.addProcessor(tfod);
 
+        builder.addProcessor(processor);
+
+        FtcDashboard.getInstance().startCameraStream(processor, 60.00);
+
         // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();
 
@@ -140,5 +192,13 @@ public class TensorFlowInstance {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
+
+    public void ActuateCamera(int zoom, int pan, int tilt) {
+        WebcamPTZControl = visionPortal.getCameraControl(PtzControl.class);
+        WebcamPanTiltControl.pan = pan;
+        WebcamPanTiltControl.tilt = tilt;
+        WebcamPTZControl.setPanTilt(WebcamPanTiltControl);
+        WebcamPTZControl.setZoom(zoom);
+    }
 
 }   // end class

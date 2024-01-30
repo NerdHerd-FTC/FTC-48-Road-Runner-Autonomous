@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_With_PTZ;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstance;
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
@@ -23,14 +25,14 @@ public class _2023121502_Kavi_Gupta_TeleOp_V2 extends LinearOpMode {
         ArmInstancePrevious Arm = new ArmInstancePrevious();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
-        final TensorFlowInstance.CameraStreamProcessor processor = new TensorFlowInstance.CameraStreamProcessor();
-        TensorFlowInstance TensorFlow = new TensorFlowInstance();
+        final TensorFlowInstance_With_PTZ.CameraStreamProcessor processor = new TensorFlowInstance_With_PTZ.CameraStreamProcessor();
+        TensorFlowInstance_With_PTZ TensorFlow = new TensorFlowInstance_With_PTZ();
 
 
         Arm.initializeArm(hardwareMap);
         Claw.initializeClaw(hardwareMap);
         DroneLauncher.initializeDroneLauncher(hardwareMap);
-        TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
+        TensorFlow.InitializeTensorFlow(hardwareMap, processor);
 
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("motorFL");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("motorBL");

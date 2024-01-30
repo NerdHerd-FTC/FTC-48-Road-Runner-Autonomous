@@ -31,7 +31,7 @@ public class _2024011005_Kavi_Gupta_Blue_Alliance_Front_V5 extends LinearOpMode 
 
         final Pose2d BlueFrontStartingCoordinates = new Pose2d(12, 60, Math.toRadians(90));
         MecanumDrivebase.setPoseEstimate(BlueFrontStartingCoordinates);
-        //TensorFlow.IntitializeTensorFlow(hardwareMap, processor);
+        //TensorFlow.InititializeTensorFlow(hardwareMap, processor);
         Claw.initializeClaw(hardwareMap);
         Arm.initializeArm(hardwareMap);
 
