@@ -153,33 +153,33 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_Slow_Mo_And_Solo_Pi
 
             boolean isRobotMovingToPickupPixel = false;
             if (gamepad1.left_trigger > 0) {
-                    Is_Arm_Down = true;
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                    Claw.Actuate_Claw_Top_Finger("open");
-                    sleep(700);
+                Is_Arm_Down = true;
+                Claw.Actuate_Claw_Bottom_Finger("open");
+                Claw.Actuate_Claw_Top_Finger("open");
+                sleep(700);
 
-                    Move_Robot_To_Pickup_Pixel = MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
-                            .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
-                            .forward(2)
-                            .build();
+                Move_Robot_To_Pickup_Pixel = MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
+                        .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
+                        .forward(2)
+                        .build();
 
-                    MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
-                    PixelPickupMoveForwardStartTime = System.currentTimeMillis();
-                    isRobotMovingToPickupPixel = true;
+                MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
+                PixelPickupMoveForwardStartTime = System.currentTimeMillis();
+                isRobotMovingToPickupPixel = true;
 
-                    if (currentX < -24 && currentY > -36 && currentY < 36) {
-                        Arm.SetPowerToZero();
-                        Is_Power_Set_To_Zero = true;
-                    }else {
-                        Arm.Arm_Target_Angle = 5;
-                    }
+                if (currentX < -24 && currentY > -36 && currentY < 36) {
+                    Arm.SetPowerToZero();
+                    Is_Power_Set_To_Zero = true;
+                } else {
+                    Arm.Arm_Target_Angle = 5;
+                }
 
-                    if (isRobotMovingToPickupPixel) {
-                        if (System.currentTimeMillis() >= PixelPickupMoveForwardStartTime + Move_Robot_To_Pickup_Pixel.duration()) {
-                            Is_Robot_In_Slo_Mo = false;
-                        }
+                if (isRobotMovingToPickupPixel) {
+                    if (System.currentTimeMillis() >= PixelPickupMoveForwardStartTime + Move_Robot_To_Pickup_Pixel.duration()) {
+                        Is_Robot_In_Slo_Mo = false;
                     }
                 }
+            }
 
             if (gamepad1.left_bumper) {
                 Lower_Arm_For_Solo_Pixels = true;
@@ -221,11 +221,9 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_Slow_Mo_And_Solo_Pi
 
                 if (gamepad1.dpad_left) {
                     ElevatorPresetTarget = "Up";
-                    Elevator.UpdateElevatorPositionToPreset("Up");
                 }
                 if (gamepad1.dpad_right) {
                     ElevatorPresetTarget = "Down";
-                    Elevator.UpdateElevatorPositionToPreset("Down");
                 }
 
                 if (Lower_Arm_For_Solo_Pixels) {
@@ -246,7 +244,11 @@ public class _20240129_Red_Tele_Op_Driver_Oriented_With_PIDF_Slow_Mo_And_Solo_Pi
                     Arm.Arm_Target_Angle = 100;
                 }
 
-                if (!Is_Power_Set_To_Zero) {Arm.Update_Arm_Position_With_PIDF();}
+                if (!Is_Power_Set_To_Zero) {
+                    Arm.Update_Arm_Position_With_PIDF();
+                }
+
+                Elevator.UpdateElevatorPositionToPreset(ElevatorPresetTarget);
 
                 telemetry.addData("Arm Position: ", Arm.Arm_Current_Position);
                 telemetry.addData("Arm Target Position: ", Arm.Arm_Target_Angle);
