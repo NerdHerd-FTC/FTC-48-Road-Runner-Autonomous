@@ -67,7 +67,7 @@ public class ElevatorBothInstance {
         RightElevatorServo.setPower(0);
     }
     */
-    private void SetElevatorServosPower(double Power) {
+    public void SetElevatorServosPower(double Power) {
         LeftElevatorServo.setPower(Power);
         RightElevatorServo.setPower(Power);
     }
