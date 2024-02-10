@@ -51,6 +51,17 @@ public class _2024020901_Kavi_Gupta_Tele_Op_Slo_Mo_Test_V1 extends LinearOpMode 
                     Is_Robot_In_Slo_Mo = false;
                 }
             }
+
+            telemetry.addData("Is Robot In Slo Mo: ", Is_Robot_In_Slo_Mo);
+            telemetry.addData("Robot Slo-Mo Start Time: ", Robot_Slo_Mo_Start_Time);
+            telemetry.addData("Slo Mo Trajectory Duration: ", Move_Robot_Forward_For_Slo_Mo.duration());
+
+            telemetry.addLine();
+
+            telemetry.addData("Robot X: ", Current_Robot_Pose.getX());
+            telemetry.addData("Robot Y: ", Current_Robot_Pose.getX());
+            telemetry.addData("Robot Heading: ", Current_Robot_Pose.getHeading());
+            telemetry.update();
         }
     }
 }
