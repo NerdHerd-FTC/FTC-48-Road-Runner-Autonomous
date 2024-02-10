@@ -4,15 +4,15 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Arm_Instance_With_PIDF {
+public class Arm_Instance_With_PIDF_Old {
     private PIDController Arm_PID_Controller;
 
-    public static double P_Coefficient = 0.022;
-    public static double I_Coefficient= 0.22;
+    public static double P_Coefficient = 0.02;
+    public static double I_Coefficient= 0;
 
     public static double D_Coefficient= 0.0015;
 
-    public static double F_Coefficient = 0.22;
+    public static double F_Coefficient = 0.33;
 
     public static int Arm_Target_Angle = 0;
 
