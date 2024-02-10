@@ -14,12 +14,12 @@ public class _2024011304_Kavi_Gupta_Arm_PID_V4 extends LinearOpMode {
 
     private PIDController Arm_PID_Controller;
 
-    public static double P_Coefficient = 0.02;
-    public static double I_Coefficient= 0.22;
+    public static double P_Coefficient = 0.022;
+    public static double I_Coefficient= 0.22;//0.0001
 
     public static double D_Coefficient= 0.0015;
 
-    public static double F_Coefficient = 0.33;
+    public static double F_Coefficient = 0.22;
 
     public static int Arm_Target_Angle = 0;
 
