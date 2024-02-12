@@ -17,9 +17,9 @@ import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherIns
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "0 Elevator No PIDF")
+@TeleOp(name = "0 RED Elevator No PIDF")
 
-public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
+public class _20240212_RED_TeleOp_Elevator_NoPIDF extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
@@ -64,6 +64,8 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
 
         boolean armDown = false;
         double directionMultiplier = 1;
+        double leftTrigger = 0;
+        double rightTrigger = 0;
 
 
         waitForStart();
@@ -92,6 +94,9 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
+
+            leftTrigger = gamepad2.left_trigger;
+            rightTrigger = gamepad2.right_trigger;
 
             double RobotHeading = RobotPose.getHeading();
 
@@ -143,7 +148,7 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
                 Claw.Actuate_Claw_Bottom_Finger("toggle");
             }
 
-            if (gamepad1.left_bumper) {
+            if (gamepad2.right_bumper) {
                 DroneLauncher.launchDrone();
             }
 
@@ -164,13 +169,13 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             }
              */
 
-            if (gamepad1.x) {
+            if (gamepad1.b) {
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 Arm.setArmPosTo(525, armSpeed);
             }
 
-            if (gamepad1.left_trigger > 0) {
+            if (gamepad1.right_trigger > 0) {
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 sleep(850);
 
@@ -191,14 +196,14 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             }
 // genshin uid: 642041765
 // add me pls !!
-            if (gamepad1.b) {
+            if (gamepad1.x) {
                 armDown = false;
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 Arm.setArmPosTo(100, 0.15);
             }
 
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad1.left_trigger > 0) {
                 Driving_Speed = 0.1;
                 armDown = true;
                 Claw.Actuate_Claw_Bottom_Finger("open");
@@ -243,11 +248,6 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             }
 
             LeftElevatorMotor.setPower(0);
-            RightElevatorMotor.setPower(0);
-            LeftElevatorServo.setPower(0);
-            RightElevatorServo.setPower(0);
-
-            LeftElevatorMotor.setPower(0);
             LeftElevatorServo.setPower(0);
             RightElevatorMotor.setPower(0);
             RightElevatorServo.setPower(0);
@@ -258,14 +258,13 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 directionMultiplier = -1;
             }
-            if (gamepad2.right_trigger > 0.1) {
-                double triggerValue = gamepad2.right_trigger;
-                LeftElevatorMotor.setPower(triggerValue*directionMultiplier);
-                RightElevatorMotor.setPower(triggerValue*directionMultiplier);
+            if (rightTrigger > 0) {
+                LeftElevatorMotor.setPower(rightTrigger*directionMultiplier);
+                RightElevatorMotor.setPower(rightTrigger*directionMultiplier);
             }
-            if (gamepad2.left_trigger > 0.1) {
-                LeftElevatorServo.setPower(gamepad2.left_trigger*directionMultiplier);
-                RightElevatorServo.setPower(gamepad2.left_trigger*directionMultiplier);
+            if (leftTrigger > 0) {
+                LeftElevatorServo.setPower(leftTrigger*directionMultiplier);
+                RightElevatorServo.setPower(leftTrigger*directionMultiplier);
             }
 
             if (!Arm.Arm_Motor.isBusy() && armDown) {
@@ -277,9 +276,12 @@ public class _20240202_TeleOp_Elevator_NoPIDF extends LinearOpMode {
                 Arm.setArmPosTo(100, 0.15);
             }
 
-            //Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
             Arm.setArmPosTo(Arm.getCurrentArmPos(), armSpeed);
 
+            telemetry.addData("GP2 Left Trigger (Elevator Servo): ", gamepad2.left_trigger);
+            telemetry.addData("GP2 Right Trigger (Elevator Motor): ", gamepad2.right_trigger);
+            telemetry.addData("Left Trigger (Elevator Servo): ", leftTrigger);
+            telemetry.addData("Right Trigger (Elevator Motor): ", rightTrigger);
             telemetry.addData("Arm is busy: ", Arm.Arm_Motor.isBusy());
             telemetry.addData("Arm Position: ", Arm.Arm_Motor.getCurrentPosition());
             telemetry.addData("Arm Target Position: ", Arm.Arm_Motor.getTargetPosition());
