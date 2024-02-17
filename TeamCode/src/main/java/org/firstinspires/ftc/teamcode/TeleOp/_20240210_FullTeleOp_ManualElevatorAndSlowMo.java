@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF_And_Power_To_0;
+import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
-public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
+public class _20240210_FullTeleOp_ManualElevatorAndSlowMo extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrivebaseInstance MecanumDrivebase = new MecanumDrivebaseInstance(hardwareMap);
@@ -30,7 +30,7 @@ public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
 
         StandardTrackingWheelLocalizer Localizer = new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
 
-        Arm_Instance_With_PIDF_And_Power_To_0 Arm = new Arm_Instance_With_PIDF_And_Power_To_0();
+        Arm_Instance_With_PIDF Arm = new Arm_Instance_With_PIDF();
         ClawInstance Claw = new ClawInstance();
         DroneLauncherInstance DroneLauncher = new DroneLauncherInstance();
 
@@ -67,8 +67,6 @@ public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
         boolean Lower_Arm_For_Solo_Pixels = false;
 
         double directionMultiplier = 1;
-
-        int ElevatorCount = 0;
 
 
         long PixelPickupMoveForwardStartTime = 0;
@@ -119,11 +117,6 @@ public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
             double backLeftPower = ((rotY - rotX + Right_Stick_X) / denominator);
             double frontRightPower = ((rotY - rotX - Right_Stick_X) / denominator);
             double backRightPower = ((rotY + rotX - Right_Stick_X) / denominator);
-
-            frontLeftMotor.setPower(frontLeftPower * TeleOpConstants.Robot_Driving_Speed);
-            backLeftMotor.setPower(backLeftPower * TeleOpConstants.Robot_Driving_Speed);
-            frontRightMotor.setPower(frontRightPower * TeleOpConstants.Robot_Driving_Speed);
-            backRightMotor.setPower(backRightPower * TeleOpConstants.Robot_Driving_Speed);
 
             if (gamepad1.y) {
                 Claw.Actuate_Claw_Top_Finger("toggle");
@@ -176,13 +169,6 @@ public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
                 MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
                 PixelPickupMoveForwardStartTime = System.currentTimeMillis();
                 isRobotMovingToPickupPixel = true;
-
-                if (currentX < -24 && currentY > -36 && currentY < 36) {
-                    Arm.SetPowerToZero();
-                    Is_Power_Set_To_Zero = true;
-                } else {
-                    Arm.Arm_Target_Angle = 5;
-                }
             }
 
             if (isRobotMovingToPickupPixel) {
@@ -193,86 +179,13 @@ public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
             }
 
 
-            if (gamepad1.left_bumper) {
-                Lower_Arm_For_Solo_Pixels = true;
-                Arm.Arm_Target_Angle = 25;
-
-                if (isRobotMovingToPickupPixel) {
-                    if (System.currentTimeMillis() >= PixelPickupMoveForwardStartTime + Move_Robot_To_Pickup_Pixel.duration()) {
-                        Is_Robot_In_Slo_Mo = false;
-                    }
-                }
-
-                Move_Robot_To_Pickup_Pixel = MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
-                        .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
-                        .forward(2)
-                        .build();
-
-                MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
-                PixelPickupMoveForwardStartTime = System.currentTimeMillis();
-                isRobotMovingToPickupPixel = true;
-            }
-
-
-
-            if (gamepad1.dpad_up) {
-
-                if (Is_Robot_In_Slo_Mo == false) {
-                    Move_Robot_Forward_For_Slo_Mo = MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
-                            .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
-                            .forward(2)
-                            .build();
-                    Robot_Slo_Mo_Start_Time = System.currentTimeMillis();
-                    MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_Forward_For_Slo_Mo);
-                    Is_Robot_In_Slo_Mo = true;
-                }
-            }
-
-            if (Is_Robot_In_Slo_Mo) {
-                if (System.currentTimeMillis() >= Robot_Slo_Mo_Start_Time + Move_Robot_Forward_For_Slo_Mo.duration()) {
-                    Is_Robot_In_Slo_Mo = false;
-                }
-            }
-
-
-            if (Lower_Arm_For_Solo_Pixels) {
-                Lower_Arm_For_Solo_Pixels = false;
-                Claw.Actuate_Claw_Bottom_Finger("open");
-                Claw.Actuate_Claw_Top_Finger("open");
-                Arm.Arm_Target_Angle = 5;
-                Is_Arm_Down = true;
-            }
-
             if (Is_Arm_Down) {
                 Is_Arm_Down = false;
-                Is_Power_Set_To_Zero = false;
                 sleep(50);
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 sleep(150);
                 Arm.Arm_Target_Angle = 100;
-            }
-
-            if (gamepad2.x) {
-                ElevatorCount = 1;
-            }
-            if (gamepad2.y) {
-                ElevatorCount = -1;
-            }
-
-            if (ElevatorCount > 0 && ElevatorCount < 100) {
-                LeftElevatorMotor.setPower(1);
-                RightElevatorMotor.setPower(1);
-                LeftElevatorServo.setPower(1);
-                RightElevatorServo.setPower(1);
-                ElevatorCount += 1;
-            }
-            if (ElevatorCount < 0 && ElevatorCount > -100) {
-                LeftElevatorMotor.setPower(-1);
-                RightElevatorMotor.setPower(-1);
-                LeftElevatorServo.setPower(-1);
-                RightElevatorServo.setPower(-1);
-                ElevatorCount -= 1;
             }
 
             if (gamepad2.dpad_up) {
@@ -295,13 +208,24 @@ public class _20240202_FullTeleOp_ElevatorMacro extends LinearOpMode {
                 Arm.Update_Arm_Position_With_PIDF();
             }
 
+            if (gamepad1.dpad_up) {
+                frontLeftPower = -0.1/TeleOpConstants.Robot_Driving_Speed;
+                backLeftPower = -0.1/TeleOpConstants.Robot_Driving_Speed;
+                frontRightPower = -0.1/TeleOpConstants.Robot_Driving_Speed;
+                backRightPower = -0.1/TeleOpConstants.Robot_Driving_Speed;
+            }
+
+            frontLeftMotor.setPower(frontLeftPower * TeleOpConstants.Robot_Driving_Speed);
+            backLeftMotor.setPower(backLeftPower * TeleOpConstants.Robot_Driving_Speed);
+            frontRightMotor.setPower(frontRightPower * TeleOpConstants.Robot_Driving_Speed);
+            backRightMotor.setPower(backRightPower * TeleOpConstants.Robot_Driving_Speed);
+
             telemetry.addData("Arm Position: ", Arm.Arm_Current_Position);
             telemetry.addData("Arm Target Position: ", Arm.Arm_Target_Angle);
             telemetry.addData("Top Claw Position: ", Claw.Claw_Top_Finger.getPosition());
             telemetry.addData("Bottom Claw Position: ", Claw.Claw_Bottom_Finger.getPosition());
             telemetry.addData("Drone Launcher Position: ", DroneLauncher.DroneLauncherServo.getPosition());
             telemetry.addData("Direction Multiplier: ", directionMultiplier);
-            telemetry.addData("Elevator Count: ", ElevatorCount);
             telemetry.addLine("--- Robot Pos ---");
             telemetry.addData("x: ", currentX);
             telemetry.addData("x: ", currentY);
