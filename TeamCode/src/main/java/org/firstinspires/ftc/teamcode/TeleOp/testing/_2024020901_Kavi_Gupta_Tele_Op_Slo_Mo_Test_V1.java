@@ -29,30 +29,28 @@ public class _2024020901_Kavi_Gupta_Tele_Op_Slo_Mo_Test_V1 extends LinearOpMode 
 
         long Robot_Slo_Mo_Start_Time = 0;
 
-        TrajectorySequence Move_Robot_Forward_For_Slo_Mo = null;
+        TrajectorySequence Move_Robot_Forward_For_Slo_Mo = MecanumDrivebase.trajectorySequenceBuilder(new Pose2d())
+                //.setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
+                .forward(2)
+                .build();;
+
+        waitForStart();
 
         while (opModeIsActive()) {
             Localizer.update();
             Pose2d Current_Robot_Pose = Localizer.getPoseEstimate();
             if (gamepad1.dpad_up) {
-                if (Is_Robot_In_Slo_Mo == false) {
                     Move_Robot_Forward_For_Slo_Mo = MecanumDrivebase.trajectorySequenceBuilder(Current_Robot_Pose)
                             //.setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(5, 10, DriveConstants.TRACK_WIDTH))
                             .forward(2)
                             .build();
-                    Robot_Slo_Mo_Start_Time = System.currentTimeMillis();
                     MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_Forward_For_Slo_Mo);
-                    Is_Robot_In_Slo_Mo = true;
-                }
             }
-
-            if (Is_Robot_In_Slo_Mo) {
-                if (System.currentTimeMillis() >= Robot_Slo_Mo_Start_Time + Move_Robot_Forward_For_Slo_Mo.duration()) {
-                    Is_Robot_In_Slo_Mo = false;
-                }
-            }
+            MecanumDrivebase.update();
 
             telemetry.addData("Is Robot In Slo Mo: ", Is_Robot_In_Slo_Mo);
+            telemetry.addData("Slo-Mo Check: ", Robot_Slo_Mo_Start_Time + (Move_Robot_Forward_For_Slo_Mo.duration()*1000));
+            telemetry.addData("Current Time: ", System.currentTimeMillis());
             telemetry.addData("Robot Slo-Mo Start Time: ", Robot_Slo_Mo_Start_Time);
             telemetry.addData("Slo Mo Trajectory Duration: ", Move_Robot_Forward_For_Slo_Mo.duration());
 
