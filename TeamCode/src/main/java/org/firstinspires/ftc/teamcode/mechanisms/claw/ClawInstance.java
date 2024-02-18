@@ -10,13 +10,13 @@ public class ClawInstance {
 
     public Servo Claw_Bottom_Finger;
 
-    private double Claw_Bottom_Open_Position_Value = 0.4;
+    private double Claw_Bottom_Open_Position_Value = 0.1;
 
-    private double Claw_Bottom_Close_Position_Value = 0;
+    private double Claw_Bottom_Close_Position_Value = 0.2;
 
-    private double Claw_Top_Open_Position_Value = 0.4;
+    private double Claw_Top_Open_Position_Value = 0.2;
 
-    private double Claw_Top_Close_Position_Value = 0;
+    private double Claw_Top_Close_Position_Value = 0.4;
 
     public String Claw_Top_Status = "";
     public String Claw_Bottom_Status = "";

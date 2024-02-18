@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.TeleOp._20240212_Code;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,13 +17,13 @@ import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherIns
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "0 BLUE Elevator No PIDF")
+@TeleOp(name = "0 BLUE V2 Manual Arm")
 
-public class _20240212_BLUE_TeleOp_Elevator_NoPIDF extends LinearOpMode {
+public class _20240212_BLUE_V2_TeleOp_Elevator_NoPIDF extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
-    private double Driving_Speed = 0.85;
+    private double Driving_Speed = 1;
     double armSpeed = 0.15;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -148,7 +148,7 @@ public class _20240212_BLUE_TeleOp_Elevator_NoPIDF extends LinearOpMode {
                 Claw.Actuate_Claw_Bottom_Finger("toggle");
             }
 
-            if (gamepad2.left_bumper) {
+            if (gamepad2.a) {
                 DroneLauncher.launchDrone();
             }
 
@@ -184,9 +184,9 @@ public class _20240212_BLUE_TeleOp_Elevator_NoPIDF extends LinearOpMode {
                 backRightMotor.setPower(-Driving_Speed);
                 frontLeftMotor.setPower(-Driving_Speed);
                 frontRightMotor.setPower(Driving_Speed);
-                sleep(800);
+                sleep(700);
 
-                Driving_Speed = 0.85;
+                Driving_Speed = 1;
                 backLeftMotor.setPower(0);
                 backRightMotor.setPower(0);
                 frontLeftMotor.setPower(0);
@@ -228,23 +228,30 @@ public class _20240212_BLUE_TeleOp_Elevator_NoPIDF extends LinearOpMode {
                     break;
                 }
 
-                Driving_Speed = 0.85;
+                Driving_Speed = 1;
             }
 
             if (gamepad1.dpad_up) {
-                Driving_Speed = 0.1;
+                Driving_Speed = 0.15;
                 backLeftMotor.setPower(-Driving_Speed);
                 backRightMotor.setPower(-Driving_Speed);
                 frontLeftMotor.setPower(-Driving_Speed);
                 frontRightMotor.setPower(-Driving_Speed);
 
-                sleep(1000);
+                sleep(700);
                 backLeftMotor.setPower(0);
                 backRightMotor.setPower(0);
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
 
-                Driving_Speed = 0.85;
+                Driving_Speed = 1;
+            }
+
+            if (gamepad2.dpad_left) {
+                Arm.setArmPosTo(Arm.Arm_Motor.getCurrentPosition() + 10, 0.15);
+            }
+            if (gamepad2.dpad_right) {
+                Arm.setArmPosTo(Arm.Arm_Motor.getCurrentPosition() - 10, 0.15);
             }
 
             LeftElevatorMotor.setPower(0);

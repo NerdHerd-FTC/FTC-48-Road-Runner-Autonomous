@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.TeleOp._20240212_Code;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,9 +17,9 @@ import org.firstinspires.ftc.teamcode.mechanisms.drone_launcher.DroneLauncherIns
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "0 RED Elevator No PIDF")
+@TeleOp(name = "0 BLUE Elevator No PIDF")
 
-public class _20240212_RED_TeleOp_Elevator_NoPIDF extends LinearOpMode {
+public class _20240212_BLUE_TeleOp_Elevator_NoPIDF extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;
 
@@ -148,7 +148,7 @@ public class _20240212_RED_TeleOp_Elevator_NoPIDF extends LinearOpMode {
                 Claw.Actuate_Claw_Bottom_Finger("toggle");
             }
 
-            if (gamepad2.right_bumper) {
+            if (gamepad2.a) {
                 DroneLauncher.launchDrone();
             }
 
@@ -169,13 +169,13 @@ public class _20240212_RED_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             }
              */
 
-            if (gamepad1.b) {
+            if (gamepad1.x) {
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 Arm.setArmPosTo(525, armSpeed);
             }
 
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad1.left_trigger > 0) {
                 Claw.Actuate_Claw_Bottom_Finger("open");
                 sleep(850);
 
@@ -196,14 +196,14 @@ public class _20240212_RED_TeleOp_Elevator_NoPIDF extends LinearOpMode {
             }
 // genshin uid: 642041765
 // add me pls !!
-            if (gamepad1.x) {
+            if (gamepad1.b) {
                 armDown = false;
                 Claw.Actuate_Claw_Bottom_Finger("close");
                 Claw.Actuate_Claw_Top_Finger("close");
                 Arm.setArmPosTo(100, 0.15);
             }
 
-            if (gamepad1.left_trigger > 0) {
+            if (gamepad1.right_trigger > 0) {
                 Driving_Speed = 0.1;
                 armDown = true;
                 Claw.Actuate_Claw_Bottom_Finger("open");
