@@ -92,6 +92,10 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
         int Arm_Motor_Tolerance = 0; //ticks
         int Arm_Current_Position;
 
+        double CalculatedPID;
+        double CalculatedFeedForward;
+        double Calculated_Power_For_Arm_Motor;
+
         double Arm_Ticks_Per_Revolution = 537.7; //goBilda Yellow Jacket 5203
         double Arm_Motor_Ticks_Per_Degree = Arm_Ticks_Per_Revolution / 180;
 
@@ -249,10 +253,10 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
             Arm_Current_Position = Arm_Motor.getCurrentPosition();
             Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
+            CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
+            CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
+            Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
             if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
-                double CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
-                double CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
-                double Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
                 Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
             }
 
