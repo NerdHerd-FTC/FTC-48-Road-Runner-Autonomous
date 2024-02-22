@@ -46,12 +46,13 @@ public class Arm_Instance_With_PIDF {
 
         Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
 
+        double CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
+
+        double CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree))*F_Coefficient;
+
+        double Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
+
         if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
-            double CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
-
-            double CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree))*F_Coefficient;
-
-            double Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
 
             Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
         }

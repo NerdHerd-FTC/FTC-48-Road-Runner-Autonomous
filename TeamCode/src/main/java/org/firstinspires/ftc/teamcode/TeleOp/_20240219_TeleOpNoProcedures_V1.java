@@ -79,9 +79,9 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
 
         double Claw_Top_Close_Position_Value = 0.4;
 
-        double P_Coefficient = 0.0075;
-        double I_Coefficient = 0;
-        double D_Coefficient = 0.00125;
+        double P_Coefficient = 0.0025;
+        double I_Coefficient = 0.12;
+        double D_Coefficient = 0.001;
         double F_Coefficient = 0.12;
 
         String Claw_Top_Status = "";
@@ -94,7 +94,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
 
         double CalculatedPID;
         double CalculatedFeedForward;
-        double Calculated_Power_For_Arm_Motor;
+        double Calculated_Power_For_Arm_Motor =0;
 
         double Arm_Ticks_Per_Revolution = 537.7; //goBilda Yellow Jacket 5203
         double Arm_Motor_Ticks_Per_Degree = Arm_Ticks_Per_Revolution / 180;
@@ -114,6 +114,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
         Claw_Bottom_Finger.scaleRange(0, 1);
 
         boolean Is_Arm_Down = true;
+        int Arm_Down_Count = 0;
 
         boolean Is_Robot_In_Slo_Mo = false;
 
@@ -136,6 +137,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
         waitForStart();
 
         Arm_Target_Angle = 100;
+        boolean isRobotMovingToPickupPixel = false;
 
         while (opModeIsActive()) {
             Localizer.update();
@@ -201,7 +203,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
                 Arm_Target_Angle = Arm_Target_Position_Ticks_For_Idle_Position;
             }
 
-            boolean isRobotMovingToPickupPixel = false;
+
             if (gamepad1.left_trigger > 0) {
                 Is_Arm_Down = true;
                 Claw_Bottom_Finger.setPosition(Claw_Bottom_Open_Position_Value);
@@ -216,6 +218,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
                 MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
                 PixelPickupMoveForwardStartTime = System.currentTimeMillis();
                 isRobotMovingToPickupPixel = true;
+                Arm_Target_Angle = 0;
             }
 
             if (isRobotMovingToPickupPixel) {
@@ -226,12 +229,16 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             }
 
             if (Is_Arm_Down) {
-                Is_Arm_Down = false;
-                sleep(50);
-                Claw_Bottom_Finger.setPosition(Claw_Bottom_Close_Position_Value);
-                Claw_Top_Finger.setPosition(Claw_Top_Close_Position_Value);
-                sleep(150);
-                Arm_Target_Angle = Arm_Target_Position_Ticks_For_Idle_Position;
+                Arm_Down_Count += 1;
+                if (Arm_Down_Count > 150) {
+                    Is_Arm_Down = false;
+                    Arm_Down_Count = 0;
+                    //sleep(50);
+                    Claw_Bottom_Finger.setPosition(Claw_Bottom_Close_Position_Value);
+                    Claw_Top_Finger.setPosition(Claw_Top_Close_Position_Value);
+                    //sleep(150);
+                    Arm_Target_Angle = Arm_Target_Position_Ticks_For_Idle_Position;
+                }
             }
 
             if (gamepad2.dpad_up) {
@@ -250,15 +257,23 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
                 RightElevatorServo.setPower(gamepad2.left_trigger * directionMultiplier);
             }
 
-            Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
+            //Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
             Arm_Current_Position = Arm_Motor.getCurrentPosition();
-            Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
+            //Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
             CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
             CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
             Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
-            if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
+            Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
+            /*if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
+                CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
+                CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
+                Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
                 Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
             }
+            Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
+
+             */
+
 
             if (gamepad1.dpad_up) {
                 frontLeftPower = -0.1 / Robot_Driving_Speed;

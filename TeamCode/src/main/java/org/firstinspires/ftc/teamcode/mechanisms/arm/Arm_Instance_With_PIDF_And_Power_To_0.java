@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Arm_Instance_With_PIDF_And_Power_To_0 {
     private PIDController Arm_PID_Controller;
 
-    public static double P_Coefficient = 0.02;
-    public static double I_Coefficient= 0;
+    public static double P_Coefficient = 0.0075;
+    public static double I_Coefficient= 0.12;
 
-    public static double D_Coefficient= 0.0015;
+    public static double D_Coefficient= 0.001;
 
-    public static double F_Coefficient = 0.33;
+    public static double F_Coefficient = 0.12;
 
     public static int Arm_Target_Angle = 0;
 

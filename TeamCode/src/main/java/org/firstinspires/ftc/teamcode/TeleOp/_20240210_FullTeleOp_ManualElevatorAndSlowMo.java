@@ -169,6 +169,7 @@ public class _20240210_FullTeleOp_ManualElevatorAndSlowMo extends LinearOpMode {
                 MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
                 PixelPickupMoveForwardStartTime = System.currentTimeMillis();
                 isRobotMovingToPickupPixel = true;
+                Arm.Arm_Target_Angle = 5;
             }
 
             if (isRobotMovingToPickupPixel) {
@@ -178,7 +179,6 @@ public class _20240210_FullTeleOp_ManualElevatorAndSlowMo extends LinearOpMode {
 
             }
 
-
             if (Is_Arm_Down) {
                 Is_Arm_Down = false;
                 sleep(50);
@@ -186,6 +186,7 @@ public class _20240210_FullTeleOp_ManualElevatorAndSlowMo extends LinearOpMode {
                 Claw.Actuate_Claw_Top_Finger("close");
                 sleep(150);
                 Arm.Arm_Target_Angle = 100;
+                Arm.Update_Arm_Position_With_PIDF();
             }
 
             if (gamepad2.dpad_up) {
