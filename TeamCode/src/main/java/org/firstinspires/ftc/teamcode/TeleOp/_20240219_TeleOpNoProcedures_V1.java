@@ -172,7 +172,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             double frontRightPower = ((rotY - rotX - Right_Stick_X) / denominator);
             double backRightPower = ((rotY + rotX - Right_Stick_X) / denominator);
 
-            if (gamepad1.right_bumper) {
+            if (gamepad2.a) {
                 DroneLauncherServo.setPosition(Drone_Launcher_Launch_Position);
                 sleep(1500);
                 DroneLauncherServo.setPosition(Drone_Launcher_Idle_Position);
@@ -255,6 +255,13 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             if (gamepad2.left_trigger > 0.1) {
                 LeftElevatorServo.setPower(gamepad2.left_trigger * directionMultiplier);
                 RightElevatorServo.setPower(gamepad2.left_trigger * directionMultiplier);
+            }
+
+            if (gamepad2.dpad_right) {
+                Arm_Target_Angle = Arm_Motor.getCurrentPosition() + 15;
+            }
+            if (gamepad2.dpad_left) {
+                Arm_Target_Angle = Arm_Motor.getCurrentPosition() - 15;
             }
 
             //Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
