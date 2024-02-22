@@ -230,7 +230,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
 
             if (Is_Arm_Down) {
                 Arm_Down_Count += 1;
-                if (Arm_Down_Count > 150) {
+                if (Arm_Down_Count > 100) {
                     Is_Arm_Down = false;
                     Arm_Down_Count = 0;
                     //sleep(50);
