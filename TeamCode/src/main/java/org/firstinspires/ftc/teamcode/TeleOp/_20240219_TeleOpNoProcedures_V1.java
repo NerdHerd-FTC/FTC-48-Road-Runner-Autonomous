@@ -79,10 +79,10 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
 
         double Claw_Top_Close_Position_Value = 0.4;
 
-        double P_Coefficient = 0.0025;
-        double I_Coefficient = 0.12;
-        double D_Coefficient = 0.001;
-        double F_Coefficient = 0.12;
+        double P_Coefficient = 0.006;
+        double I_Coefficient = 0.01;
+        double D_Coefficient = 0.0005;
+        double F_Coefficient = 0.15;
 
         String Claw_Top_Status = "";
         String Claw_Bottom_Status = "";
@@ -115,6 +115,9 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
 
         boolean Is_Arm_Down = true;
         int Arm_Down_Count = 0;
+
+        boolean releasedBottomPixel = false;
+        int pixelReleaseCount = 0;
 
         boolean Is_Robot_In_Slo_Mo = false;
 
@@ -172,12 +175,6 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             double frontRightPower = ((rotY - rotX - Right_Stick_X) / denominator);
             double backRightPower = ((rotY + rotX - Right_Stick_X) / denominator);
 
-            if (gamepad2.a) {
-                DroneLauncherServo.setPosition(Drone_Launcher_Launch_Position);
-                sleep(1500);
-                DroneLauncherServo.setPosition(Drone_Launcher_Idle_Position);
-            }
-
             if (gamepad1.b) {
                 Claw_Bottom_Finger.setPosition(Claw_Bottom_Close_Position_Value);
                 Claw_Top_Finger.setPosition(Claw_Top_Close_Position_Value);
@@ -192,8 +189,16 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
                         .build();
 
                 MecanumDrivebase.followTrajectoryAsync(Move_Robot_To_Release_Next_Pixel);
+                releasedBottomPixel = true;
+            }
 
-                Claw_Top_Finger.setPosition(Claw_Top_Open_Position_Value);
+            if (releasedBottomPixel) {
+                pixelReleaseCount += 1;
+                if (pixelReleaseCount > 80) {
+                    releasedBottomPixel = false;
+                    pixelReleaseCount = 0;
+                    Claw_Top_Finger.setPosition(Claw_Top_Open_Position_Value);
+                }
             }
 
             if (gamepad1.x) {
@@ -218,7 +223,7 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
                 MecanumDrivebase.followTrajectorySequenceAsync(Move_Robot_To_Pickup_Pixel);
                 PixelPickupMoveForwardStartTime = System.currentTimeMillis();
                 isRobotMovingToPickupPixel = true;
-                Arm_Target_Angle = 0;
+                Arm_Target_Angle = 10;
             }
 
             if (isRobotMovingToPickupPixel) {
@@ -230,13 +235,13 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
 
             if (Is_Arm_Down) {
                 Arm_Down_Count += 1;
-                if (Arm_Down_Count > 100) {
-                    Is_Arm_Down = false;
-                    Arm_Down_Count = 0;
-                    //sleep(50);
+                if (Arm_Down_Count == 50) {
                     Claw_Bottom_Finger.setPosition(Claw_Bottom_Close_Position_Value);
                     Claw_Top_Finger.setPosition(Claw_Top_Close_Position_Value);
-                    //sleep(150);
+                }
+                if (Arm_Down_Count > 70) {
+                    Is_Arm_Down = false;
+                    Arm_Down_Count = 0;
                     Arm_Target_Angle = Arm_Target_Position_Ticks_For_Idle_Position;
                 }
             }
@@ -263,6 +268,23 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             if (gamepad2.dpad_left) {
                 Arm_Target_Angle = Arm_Motor.getCurrentPosition() - 15;
             }
+
+            if (gamepad2.a) {
+                Arm_Target_Angle = Arm_Target_Position_Ticks_For_Backboard;
+            }
+            if (gamepad2.b) {
+                Arm_Target_Angle = 450;
+            }
+            if (gamepad2.y) {
+                Arm_Target_Angle = 400;
+            }
+
+            if (gamepad2.x) {
+                DroneLauncherServo.setPosition(Drone_Launcher_Launch_Position);
+                sleep(1500);
+                DroneLauncherServo.setPosition(Drone_Launcher_Idle_Position);
+            }
+
 
             //Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
             Arm_Current_Position = Arm_Motor.getCurrentPosition();
@@ -303,6 +325,11 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
             telemetry.addLine("--- Robot Pos ---");
             telemetry.addData("x: ", currentX);
             telemetry.addData("y: ", currentY);
+            telemetry.addLine("--- PIDF Values ---");
+            telemetry.addData("P: ", P_Coefficient);
+            telemetry.addData("I: ", I_Coefficient);
+            telemetry.addData("D: ", D_Coefficient);
+            telemetry.addData("F: ", F_Coefficient);
             telemetry.update();
         }
     }
