@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 
 
-public class ClawServoTesters extends LinearOpMode {
+public class ClawServoTestersV2 extends LinearOpMode {
     public Servo Claw_Top_Finger;
 
     public Servo Claw_Bottom_Finger;
@@ -46,15 +46,15 @@ public class ClawServoTesters extends LinearOpMode {
             telemetry.update();
 
             if (gamepad1.y) {
-                Top_Claw_Target = 0.6;
+                Top_Claw_Target = 0.3;
                 Bottom_Claw_Target = 0.3;
-                Claw_Top_Finger.setPosition(0.6);
+                Claw_Top_Finger.setPosition(Top_Claw_Target);
                 Claw_Bottom_Finger.setPosition(Bottom_Claw_Target);
             }
             if (gamepad1.a) {
-                Top_Claw_Target = 0.3;
+                Top_Claw_Target = 0;
                 Bottom_Claw_Target = 0;
-                Claw_Top_Finger.setPosition(0.3);
+                Claw_Top_Finger.setPosition(Top_Claw_Target);
                 Claw_Bottom_Finger.setPosition(Bottom_Claw_Target);
             }
 

@@ -1,7 +1,6 @@
-package org.firstinspires.ftc.teamcode.Autonomous_Drive.Blue_Alliance_Front;
+package org.firstinspires.ftc.teamcode.Autonomous_Drive.Blue_Alliance_Back;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
-public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode {
+public class _2024022103_Kavi_Gupta_Blue_Alliance_Back_V3 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        final short ArmBackboardPosition = 560;
+        final short ArmBackboardPosition = 570;
         final short ArmRestPosition = 150;
         final short ArmPlacePixelOnFloorPosition = 5;
 
@@ -29,8 +28,8 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
         final ArmInstancePrevious Arm = new ArmInstancePrevious();
         //final TensorFlowInstance_Individual_Scanning.CameraStreamProcessor processor = new TensorFlowInstance_Individual_Scanning.CameraStreamProcessor();
 
-        final Pose2d BlueFrontStartingCoordinates = new Pose2d(12, 60, Math.toRadians(90));
-        MecanumDrivebase.setPoseEstimate(BlueFrontStartingCoordinates);
+        Pose2d StartingPositionRedBack = new Pose2d(-36, 60, Math.toRadians(90));
+        MecanumDrivebase.setPoseEstimate(StartingPositionRedBack);
         //TensorFlow.InititializeTensorFlow(hardwareMap, processor);
         Claw.initializeClaw(hardwareMap);
         Arm.initializeArm(hardwareMap);
@@ -43,7 +42,7 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
         String PropLocation = null;
         //TensorFlow.SetWebcamStreamStatus("start");
 
-        TrajectorySequence BlueFrontCenter = MecanumDrivebase.trajectorySequenceBuilder(BlueFrontStartingCoordinates)
+        TrajectorySequence blueBackRight = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingPositionRedBack)
                 .setTurnConstraint(5, 5)
                 .back(10)
                 .turn(Math.toRadians(45))
@@ -53,8 +52,8 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                 .turn(Math.toRadians(45))
                 .back(4)
                 //scn end
-
-                .back(16)
+                .back(13)
+                .turn(Math.toRadians(-90))
                 .addTemporalMarker(() -> {
                     Arm.moveArmTo(5);
                 })
@@ -64,28 +63,82 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                 })
                 .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmBackboardPosition);
+                    Arm.moveArmTo(ArmRestPosition);
                 })
-                //floor pixel
+                .waitSeconds(0.5)
+                .back(4)
+                //floor
+                .waitSeconds(0.5)
+                .waitSeconds(0.5)
                 .waitSeconds(1)
-                .forward(6)
-                .turn(Math.toRadians(-90))
-                .resetConstraints()
+                .forward(5)
+                .strafeRight(24)
+                .forward(70)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     Arm.moveArmTo(ArmBackboardPosition);
                 })
-                .forward(35)
-                //backboard pixel
+                .strafeLeft(27)
+                .forward(12)
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
-                .waitSeconds(1)
+                .waitSeconds(0.5)
                 .back(5)
-                .strafeLeft(25)
-                .forward(12)
+                .strafeRight(15)
+                .forward(15)
                 .build();
 
-        TrajectorySequence BlueFrontLeft = MecanumDrivebase.trajectorySequenceBuilder(BlueFrontStartingCoordinates)
+        TrajectorySequence blueBackLeft = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingPositionRedBack)
+                .setTurnConstraint(5, 5)
+                .back(10)
+                .turn(Math.toRadians(45))
+                .setTurnConstraint(5, 5)
+                .turn(Math.toRadians(-90))
+                .setTurnConstraint(5,5)
+                .turn(Math.toRadians(45))
+                .back(4)
+                //scn end
+                .back(13)
+                .addTemporalMarker(() -> {
+                    Arm.moveArmTo(5);
+                })
+                .waitSeconds(0.5)
+                .addTemporalMarker(() -> {
+                    Claw.Actuate_Claw_Bottom_Finger("open");
+                })
+                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
+                    Arm.moveArmTo(ArmRestPosition);
+                })
+                .waitSeconds(0.5)
+                //Beginning Sequence
+                .turn(Math.toRadians(90))
+                .back(4)
+                .waitSeconds(0.5)
+                .waitSeconds(0.5)
+                .waitSeconds(1)
+                .forward(5)
+                .strafeLeft(24)
+                .turn(Math.toRadians(170))
+                .waitSeconds(0.5)
+                .forward(70)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    Arm.moveArmTo(ArmBackboardPosition);
+                })
+                .strafeLeft(27)
+                .turn(Math.toRadians(-10))
+                .forward(12)
+                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                    Claw.Actuate_Claw_Top_Finger("open");
+                })
+                .waitSeconds(0.5)
+                .back(5)
+                .strafeRight(30)
+                .forward(15)
+                .resetConstraints()
+                .build();
+
+        TrajectorySequence blueBackCenter = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingPositionRedBack)
                 .setTurnConstraint(5, 5)
                 .back(10)
                 .turn(Math.toRadians(45))
@@ -96,113 +149,72 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                 .back(4)
                 //scn end
                 .back(18)
-                .turn(Math.toRadians(90))
-                .resetConstraints()
                 .addTemporalMarker(() -> {
                     Arm.moveArmTo(5);
                 })
-                .back(4)
                 .waitSeconds(0.5)
                 .addTemporalMarker(() -> {
                     Claw.Actuate_Claw_Bottom_Finger("open");
                 })
                 .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmBackboardPosition);
+                    Arm.moveArmTo(ArmRestPosition);
                 })
-                .forward(7)
-                .strafeRight(10)
+                .waitSeconds(0.5)
+                //Beginning Sequence
+                .forward(5)
+                .strafeLeft(16)
+                .turn(Math.toRadians(-90))
+                .waitSeconds(0.5)
+                .strafeRight(23)
+                .turn(Math.toRadians(5))
+                //truss forward
+                .forward(95)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     Arm.moveArmTo(ArmBackboardPosition);
                 })
-                .back(35)
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
-                    Claw.Actuate_Claw_Top_Finger("open");
-                })
-                .waitSeconds(1)
+
+                .strafeLeft(27)
                 .forward(5)
-                .strafeRight(15)
-                .back(15)
-                .build();
-
-        TrajectorySequence BlueFrontRight = MecanumDrivebase.trajectorySequenceBuilder(BlueFrontStartingCoordinates)
-                .setTurnConstraint(5, 5)
-                .back(10)
-                .turn(Math.toRadians(45))
-                .setTurnConstraint(5, 5)
-                .turn(Math.toRadians(-90))
-                .setTurnConstraint(5,5)
-                .turn(Math.toRadians(45))
-                .back(4)
-                //scn end
-                .back(17)
-                .turn(Math.toRadians(-90))
-                .resetConstraints()
-                .addTemporalMarker(() -> {
-                    Arm.moveArmTo(5);
-                })
-                .back(4)
-                //drop on floor
-                .waitSeconds(0.5)
-                .addTemporalMarker(() -> {
-                    Claw.Actuate_Claw_Bottom_Finger("open");
-                })
-                .waitSeconds(0.5)
-                .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmBackboardPosition);
-                })
-
-                .forward(40)
-                .UNSTABLE_addTemporalMarkerOffset(-1.5, () -> {
-                    Arm.moveArmTo(ArmBackboardPosition);
-                })
-                //Drop Backboard
-                .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
                 .waitSeconds(1)
-                .back(4)
-                .strafeLeft(30)
-                .forward(15)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    Arm.moveArmTo(50);
+                })
+                .waitSeconds(1)
+                .back(10)
+                .strafeRight(24)
+                .forward(18)
+                .resetConstraints()
                 .build();
 
-        TrajectorySequence Park = MecanumDrivebase.trajectorySequenceBuilder(BlueFrontStartingCoordinates)
-                .lineToLinearHeading(new Pose2d(50, 60, Math.toRadians(0)))
-                .lineTo(new Vector2d(60,60))
-                .build();
 
-        Claw.Actuate_Claw_Top_Finger("close");
-        Claw.Actuate_Claw_Bottom_Finger("close");
         waitForStart();
 
-        PropLocation = "right";
+        PropLocation = "center";
 
         if (opModeIsActive()) {
+            Arm.moveArmTo(ArmRestPosition);
             Claw.Actuate_Claw_Top_Finger("close");
             Claw.Actuate_Claw_Bottom_Finger("close");
             sleep(1000);
-            Arm.moveArmTo(ArmRestPosition);
-
+            Arm.moveArmTo(300);
             if ("center" == PropLocation) {
-                MecanumDrivebase.followTrajectorySequence(BlueFrontCenter);
+                MecanumDrivebase.followTrajectorySequence(blueBackCenter);
             } else if ("left" == PropLocation) {
-                MecanumDrivebase.followTrajectorySequence(BlueFrontLeft);
-                Claw.Actuate_Claw_Bottom_Finger("close");
-                Claw.Actuate_Claw_Top_Finger("close");
-                sleep(500);
-                Arm.moveArmTo(50);
-                while (Arm.Arm_Motor.isBusy()) {if(isStopRequested()){return;}}
-                stop();
+                MecanumDrivebase.followTrajectorySequence(blueBackLeft);
+
             } else if ("right" == PropLocation) {
-                MecanumDrivebase.followTrajectorySequence(BlueFrontRight);
+                MecanumDrivebase.followTrajectorySequence(blueBackRight);
             } else {
-                MecanumDrivebase.followTrajectorySequence(Park);
+                //MecanumDrivebase.followTrajectorySequence(Park);
             }
+            PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
+            while (Arm.Arm_Motor.isBusy()) {};
         }
 
-        PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();
 
     }
 }

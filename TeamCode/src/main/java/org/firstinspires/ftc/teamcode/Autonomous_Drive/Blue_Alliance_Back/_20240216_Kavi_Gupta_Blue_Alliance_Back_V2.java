@@ -101,7 +101,7 @@ public class _20240216_Kavi_Gupta_Blue_Alliance_Back_V2 extends LinearOpMode {
                 .resetConstraints()
                 .build();
 
-        TrajectorySequence blueBackLeft = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingPositionRedBack)
+        TrajectorySequence blueBackCenter = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingPositionRedBack)
                 .setTurnConstraint(5, 5)
                 .back(10)
                 .turn(Math.toRadians(45))
