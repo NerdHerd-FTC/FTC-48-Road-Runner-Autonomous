@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
-public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode {
+public class _2024023608_Kavi_Gupta_Blue_Alliance_Front_V8 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        final short ArmBackboardPosition = 560;
+        final short ArmBackboardPosition = 580;
         final short ArmRestPosition = 150;
         final short ArmPlacePixelOnFloorPosition = 5;
 
@@ -67,17 +67,25 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                     Arm.moveArmTo(ArmBackboardPosition);
                 })
                 //floor pixel
-                .waitSeconds(1)
-                .forward(6)
+                .waitSeconds(0.5)
+                .back(3)
+                .waitSeconds(0.5)
+                .forward(8)
                 .turn(Math.toRadians(-90))
                 .resetConstraints()
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     Arm.moveArmTo(ArmBackboardPosition);
                 })
-                .forward(35)
+                .forward(37)
+                .turn(Math.toRadians(5))
+                .waitSeconds(0.5)
                 //backboard pixel
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
+                })
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    Arm.moveArmTo(50);
                 })
                 .waitSeconds(1)
                 .back(5)
@@ -117,8 +125,12 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                 })
                 .back(35)
                 .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
+                })
+                .waitSeconds(1)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    Arm.moveArmTo(50);
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -142,7 +154,6 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                 .addTemporalMarker(() -> {
                     Arm.moveArmTo(5);
                 })
-                .back(4)
                 //drop on floor
                 .waitSeconds(0.5)
                 .addTemporalMarker(() -> {
@@ -152,15 +163,21 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
                 .addTemporalMarker( () -> {
                     Arm.moveArmTo(ArmBackboardPosition);
                 })
-
-                .forward(40)
-                .UNSTABLE_addTemporalMarkerOffset(-1.5, () -> {
+                .waitSeconds(0.5)
+                .back(4)
+                .waitSeconds(0.5)
+                .forward(42)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     Arm.moveArmTo(ArmBackboardPosition);
                 })
                 //Drop Backboard
                 .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
+                })
+                .waitSeconds(1)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    Arm.moveArmTo(50);
                 })
                 .waitSeconds(1)
                 .back(4)
@@ -180,26 +197,22 @@ public class _2024021607_Kavi_Gupta_Blue_Alliance_Front_V7 extends LinearOpMode 
         PropLocation = "right";
 
         if (opModeIsActive()) {
+            Arm.moveArmTo(ArmRestPosition);
             Claw.Actuate_Claw_Top_Finger("close");
             Claw.Actuate_Claw_Bottom_Finger("close");
             sleep(1000);
-            Arm.moveArmTo(ArmRestPosition);
+            Arm.moveArmTo(300);
 
             if ("center" == PropLocation) {
                 MecanumDrivebase.followTrajectorySequence(BlueFrontCenter);
             } else if ("left" == PropLocation) {
                 MecanumDrivebase.followTrajectorySequence(BlueFrontLeft);
-                Claw.Actuate_Claw_Bottom_Finger("close");
-                Claw.Actuate_Claw_Top_Finger("close");
-                sleep(500);
-                Arm.moveArmTo(50);
-                while (Arm.Arm_Motor.isBusy()) {if(isStopRequested()){return;}}
-                stop();
             } else if ("right" == PropLocation) {
                 MecanumDrivebase.followTrajectorySequence(BlueFrontRight);
             } else {
-                MecanumDrivebase.followTrajectorySequence(Park);
+                //MecanumDrivebase.followTrajectorySequence(Park);
             }
+            while (Arm.Arm_Motor.isBusy()) {};
         }
 
         PoseStorage.currentPose = MecanumDrivebase.getPoseEstimate();

@@ -31,8 +31,8 @@ public class ClawInstance {
         Claw_Top_Finger.scaleRange(0, 1);
         Claw_Bottom_Finger.scaleRange(0, 1);
 
-        Actuate_Claw_Top_Finger("close");
-        Actuate_Claw_Bottom_Finger("close");
+        //Actuate_Claw_Top_Finger("close");
+        //Actuate_Claw_Bottom_Finger("close");
     }
 
     public void Actuate_Claw_Top_Finger(String Action) {
