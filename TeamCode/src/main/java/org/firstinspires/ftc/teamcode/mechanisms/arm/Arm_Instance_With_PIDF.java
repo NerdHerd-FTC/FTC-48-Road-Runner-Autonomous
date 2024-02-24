@@ -7,18 +7,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Arm_Instance_With_PIDF {
     private PIDController Arm_PID_Controller;
 
-    public static double P_Coefficient = 0.022;
-    public static double I_Coefficient= 0.22;
+    public static double P_Coefficient = 0.0075;
+    public static double I_Coefficient= 0;
 
-    public static double D_Coefficient= 0.0015;
+    public static double D_Coefficient= 0.00125;
 
-    public static double F_Coefficient = 0.22;
+    public static double F_Coefficient = 0.12;
 
     public static int Arm_Target_Angle = 0;
 
     private int Arm_Positional_Error;
 
-    public static int Arm_Motor_Tolerance = 5; //ticks
+    public static int Arm_Motor_Tolerance = 0; //ticks
 
     public static int Arm_Current_Position;
 
@@ -46,12 +46,13 @@ public class Arm_Instance_With_PIDF {
 
         Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
 
+        double CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
+
+        double CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree))*F_Coefficient;
+
+        double Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
+
         if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
-            double CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
-
-            double CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree))*F_Coefficient;
-
-            double Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
 
             Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
         }
