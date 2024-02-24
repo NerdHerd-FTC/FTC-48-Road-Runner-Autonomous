@@ -8,14 +8,10 @@ import org.firstinspires.ftc.teamcode.Autonomous_Drive._2023121801_Kavi_Gupta_Au
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.ArmInstancePrevious;
 import org.firstinspires.ftc.teamcode.mechanisms.claw.ClawInstance;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.drive.PoseStorage;
-/*<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes*/
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,18 +48,18 @@ public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
         TrajectorySequence RotateToLeftProp = MecanumDrivebaseInstance.trajectorySequenceBuilder(StartingCoordinates)
                 .setTurnConstraint(5, 5)
                 .back(10)
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(30))
                 .build();
 
         TrajectorySequence RotateToRightProp = MecanumDrivebaseInstance.trajectorySequenceBuilder(RotateToLeftProp.end())
                 .setTurnConstraint(5, 5)
-                .turn(Math.toRadians(-90))
+                .turn(Math.toRadians(-60))
                 .build();
 
 
         TrajectorySequence MoveToPropScanningLocation = MecanumDrivebaseInstance.trajectorySequenceBuilder(RotateToRightProp.end())
                 .setTurnConstraint(5,5)
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(30))
                 .back(4)
                 .build();
 
@@ -86,7 +82,7 @@ public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
 
 
         TrajectorySequence PlacePixelOnLeftSpike = MecanumDrivebaseInstance.trajectorySequenceBuilder(MoveToPropScanningLocation.end())
-                .back(18)
+                .back(15)
                 .turn(Math.toRadians(90))
                 .back(4)
                 .addTemporalMarker(() -> {
@@ -116,7 +112,7 @@ public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .addTemporalMarker( () -> {
-                    Arm.moveArmTo(ArmMovementValue);
+                    Arm.moveArmTo(300);
                 })
                 .waitSeconds(1)
                 .build();
@@ -151,18 +147,20 @@ public class _2023121807_Kavi_Gupta_Red_Alliance_Front_V7 extends LinearOpMode {
                 .build();
 
         TrajectorySequence PlaceYellowPixelOnRightBackDrop = MecanumDrivebaseInstance.trajectorySequenceBuilder(PlacePixelOnRightSpike.end())
-                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+
+                .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(10, 10, DriveConstants.TRACK_WIDTH))
+                .forward(3)
+                .strafeLeft(16)
+                .turn(Math.toRadians(180))
+                .forward(39)
+                .UNSTABLE_addTemporalMarkerOffset(-2, () -> {
                     Arm.moveArmTo(ArmMovementValue);
                 })
-                .setVelConstraint(MecanumDrivebaseInstance.getVelocityConstraint(10, 10, DriveConstants.TRACK_WIDTH))
-                .forward(7)
-                .turn(Math.toRadians(180))
-                .strafeRight(18)
-                .forward(42)
                 .strafeLeft(5)
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.25, () -> {
                     Claw.Actuate_Claw_Top_Finger("open");
                 })
+                .waitSeconds(1)
                 .build();
 
 

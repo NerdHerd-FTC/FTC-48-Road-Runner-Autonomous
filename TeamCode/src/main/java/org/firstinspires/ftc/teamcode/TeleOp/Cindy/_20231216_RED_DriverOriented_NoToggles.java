@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp.Cindy;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "RED Driver Oriented - No Toggles")
+@Disabled
 public class _20231216_RED_DriverOriented_NoToggles extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;

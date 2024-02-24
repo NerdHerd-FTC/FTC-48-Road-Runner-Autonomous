@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF_Kavi;
 
 @TeleOp
+@Disabled
 public class _20240219_IsolatedPIDFKavi extends LinearOpMode {
     @Override
     public void runOpMode(){

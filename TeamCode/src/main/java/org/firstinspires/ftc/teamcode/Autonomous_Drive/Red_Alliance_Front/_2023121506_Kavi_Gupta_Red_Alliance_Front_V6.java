@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous_Drive.Red_Alliance_Front;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Vision.tensorFlow.TensorFlowInstance_Individual_Scanning;
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Autonomous
+@Disabled
 public class _2023121506_Kavi_Gupta_Red_Alliance_Front_V6 extends LinearOpMode {
     @Override
     public void runOpMode() {

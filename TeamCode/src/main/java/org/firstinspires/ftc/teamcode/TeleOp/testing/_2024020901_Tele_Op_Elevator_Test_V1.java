@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp.testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
+@Disabled
 public class _2024020901_Tele_Op_Elevator_Test_V1 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms.arm;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp
+@Disabled
 public class _2024011303_Kavi_Gupta_Arm_PID_V3 extends LinearOpMode {
     double armKp = 0.0398;//0.07791;//0.029399999; 0.13
     double armKi = 0.001;

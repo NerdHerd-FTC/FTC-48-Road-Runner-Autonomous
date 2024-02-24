@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp._20240212_Code;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "0 BLUE Elevator No PIDF")
-
+@Disabled
 public class _20240212_BLUE_TeleOp_Elevator_NoPIDF extends LinearOpMode {
 
     private int Arm_Adjustment_Value = 50;

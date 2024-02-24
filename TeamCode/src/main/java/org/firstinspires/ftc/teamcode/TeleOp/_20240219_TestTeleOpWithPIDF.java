@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.mechanisms.arm.Arm_Instance_With_PIDF;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
+@Disabled
 public class _20240219_TestTeleOpWithPIDF extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

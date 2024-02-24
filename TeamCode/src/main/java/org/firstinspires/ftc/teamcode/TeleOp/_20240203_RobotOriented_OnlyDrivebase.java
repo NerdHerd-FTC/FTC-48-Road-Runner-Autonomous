@@ -1,19 +1,12 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
-import org.firstinspires.ftc.teamcode.drive.PoseStorage;
-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-
-import java.util.ArrayList;
-import java.util.List;
-
 @TeleOp(name = "0 Robot Oriented Only Drivebase")
-
+@Disabled
 public class _20240203_RobotOriented_OnlyDrivebase extends LinearOpMode {
 
     private double Driving_Speed = 0.85;

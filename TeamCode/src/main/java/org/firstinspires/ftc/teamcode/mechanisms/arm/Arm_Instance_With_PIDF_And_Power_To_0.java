@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.mechanisms.arm;
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+
+@Disabled
 public class Arm_Instance_With_PIDF_And_Power_To_0 {
     private PIDController Arm_PID_Controller;
 

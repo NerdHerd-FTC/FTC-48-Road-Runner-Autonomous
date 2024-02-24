@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
 @Disabled
+
 public class _2023120202_Kavi_Gupta_Red_Alliance_Front_V2 extends LinearOpMode {
     @Override
     public void runOpMode() {

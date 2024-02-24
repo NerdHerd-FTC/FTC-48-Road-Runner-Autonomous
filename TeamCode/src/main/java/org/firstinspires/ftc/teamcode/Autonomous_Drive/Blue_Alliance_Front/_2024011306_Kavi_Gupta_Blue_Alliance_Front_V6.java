@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomous_Drive.Blue_Alliance_Front;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrivebaseInstance;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
+@Disabled
 public class _2024011306_Kavi_Gupta_Blue_Alliance_Front_V6 extends LinearOpMode {
     @Override
     public void runOpMode() {

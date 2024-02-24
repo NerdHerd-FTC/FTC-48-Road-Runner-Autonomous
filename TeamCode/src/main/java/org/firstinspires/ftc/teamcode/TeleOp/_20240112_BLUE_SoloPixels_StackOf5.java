@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "0 BLUE Solo Pixels")
+@Disabled
 
 public class _20240112_BLUE_SoloPixels_StackOf5 extends LinearOpMode {
 

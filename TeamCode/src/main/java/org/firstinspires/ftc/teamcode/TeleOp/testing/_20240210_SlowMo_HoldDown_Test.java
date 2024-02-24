@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp.testing;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "Slow Mo Hold Down Test")
+@Disabled
 
 public class _20240210_SlowMo_HoldDown_Test extends LinearOpMode {
 

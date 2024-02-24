@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp.testing;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
+@Disabled
 public class _2024020901_Kavi_Gupta_Tele_Op_Slo_Mo_Test_V1 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

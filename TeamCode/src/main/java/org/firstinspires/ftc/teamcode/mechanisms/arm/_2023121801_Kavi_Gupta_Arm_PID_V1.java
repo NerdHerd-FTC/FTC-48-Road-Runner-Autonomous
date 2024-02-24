@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.mechanisms.arm;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp
+@Disabled
 public class _2023121801_Kavi_Gupta_Arm_PID_V1 extends LinearOpMode {
     double armKp = 0.13;//0.029399999; 0.13
     double armKi = 0.00005999999;
