@@ -1,17 +1,14 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
-
-import static java.lang.Thread.sleep;
+package org.firstinspires.ftc.teamcode.TeleOp.TeleOpILT;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.arcrobotics.ftclib.controller.PIDController;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
-public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
+public class _20240223_RED_TeleOpILT extends LinearOpMode {
 
 
 
@@ -245,6 +242,11 @@ public class _20240219_TeleOpNoProcedures_V1 extends LinearOpMode {
                     Arm_Target_Angle = Arm_Target_Position_Ticks_For_Idle_Position;
                 }
             }
+
+            LeftElevatorMotor.setPower(0);
+            RightElevatorMotor.setPower(0);
+            LeftElevatorServo.setPower(0);
+            RightElevatorServo.setPower(0);
 
             if (gamepad2.dpad_up) {
                 directionMultiplier = 1;
