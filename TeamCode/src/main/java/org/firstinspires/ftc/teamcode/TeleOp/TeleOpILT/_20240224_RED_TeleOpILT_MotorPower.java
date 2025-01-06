@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
-public class _20240223_RED_TeleOpILT extends LinearOpMode {
+public class _20240224_RED_TeleOpILT_MotorPower extends LinearOpMode {
 
 
 
@@ -88,6 +88,8 @@ public class _20240223_RED_TeleOpILT extends LinearOpMode {
         int Arm_Positional_Error;
         int Arm_Motor_Tolerance = 0; //ticks
         int Arm_Current_Position;
+
+        boolean settingMotorPower = false;
 
         double CalculatedPID;
         double CalculatedFeedForward;
@@ -287,21 +289,37 @@ public class _20240223_RED_TeleOpILT extends LinearOpMode {
                 DroneLauncherServo.setPosition(Drone_Launcher_Idle_Position);
             }
 
-            //Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
-            Arm_Current_Position = Arm_Motor.getCurrentPosition();
-            //Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
-            CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
-            CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
-            Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
+            if (gamepad1.left_bumper) {
+                Arm_Motor.setPower(-0.3);
+                settingMotorPower = true;
+            }
+            if (gamepad1.right_bumper) {
+                Arm_Motor.setPower(0.3);
+                settingMotorPower = true;
+            }
+
+            if (!settingMotorPower) {
+                //Arm_PID_Controller.setPID(P_Coefficient, I_Coefficient, D_Coefficient);
+                Arm_Current_Position = Arm_Motor.getCurrentPosition();
+                //Arm_Positional_Error = Arm_Target_Angle - Arm_Current_Position;
+                CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
+                CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
+                Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
+                Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
+            /*if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
+                CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
+                CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
+                Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
+                Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
+            }
             Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
-        /*if (Math.abs(Arm_Positional_Error) > Arm_Motor_Tolerance) {
-            CalculatedPID = Arm_PID_Controller.calculate(Arm_Current_Position, Arm_Target_Angle);
-            CalculatedFeedForward = Math.cos(Math.toRadians(Arm_Target_Angle / Arm_Motor_Ticks_Per_Degree)) * F_Coefficient;
-            Calculated_Power_For_Arm_Motor = CalculatedPID + CalculatedFeedForward;
-            Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
-        }
-        Arm_Motor.setPower(Calculated_Power_For_Arm_Motor);
-         */
+             */
+            } else {
+                Arm_Motor.setPower(0);
+                Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                Arm_Target_Angle = 0;
+                settingMotorPower = false;
+            }
 
             if (gamepad1.dpad_up) {
                 frontLeftPower = -0.1 / Robot_Driving_Speed;
