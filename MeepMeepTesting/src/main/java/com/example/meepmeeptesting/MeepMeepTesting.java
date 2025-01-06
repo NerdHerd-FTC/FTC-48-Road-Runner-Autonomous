@@ -344,8 +344,8 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 
 
-            meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
-                    .setDarkMode(true)
+            meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_LIGHT)
+                    .setDarkMode(false)
                     .setBackgroundAlpha(0.95f)
                     //.addEntity(blueFrontCenter)
                     //.addEntity(blueFrontRight)
